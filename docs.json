@@ -49,49 +49,117 @@
           {
             "group": "Authentication",
             "pages": [
-              "api-reference/authentication"
+              "api-reference/authentication/index",
+              "api-reference/authentication/signup",
+              "api-reference/authentication/signin",
+              "api-reference/authentication/refresh",
+              "api-reference/authentication/logout",
+              "api-reference/authentication/me",
+              {
+                "group": "API Keys",
+                "pages": [
+                  "api-reference/authentication/keys/new",
+                  "api-reference/authentication/keys/create",
+                  "api-reference/authentication/keys/regenerate",
+                  "api-reference/authentication/keys/revoke"
+                ]
+              }
             ]
           },
           {
             "group": "Projects",
             "pages": [
-              "api-reference/projects"
+              "api-reference/projects/index",
+              "api-reference/projects/create",
+              "api-reference/projects/list",
+              "api-reference/projects/get",
+              "api-reference/projects/update",
+              "api-reference/projects/delete"
             ]
           },
           {
             "group": "Plans",
             "pages": [
-              "api-reference/plans"
+              "api-reference/plans/index",
+              "api-reference/plans/create",
+              "api-reference/plans/list",
+              "api-reference/plans/get",
+              "api-reference/plans/update",
+              "api-reference/plans/archive"
             ]
           },
           {
             "group": "Customers",
             "pages": [
-              "api-reference/customers"
+              "api-reference/customers/index",
+              "api-reference/customers/create",
+              "api-reference/customers/all",
+              "api-reference/customers/get",
+              "api-reference/customers/update",
+              "api-reference/customers/delete"
             ]
           },
           {
             "group": "Subscriptions",
             "pages": [
-              "api-reference/subscriptions"
+              "api-reference/subscriptions/index",
+              "api-reference/subscriptions/create",
+              "api-reference/subscriptions/cancel",
+              "api-reference/subscriptions/pause",
+              "api-reference/subscriptions/resume",
+              "api-reference/subscriptions/change-plan",
+              "api-reference/subscriptions/audit-log"
             ]
           },
           {
             "group": "Payment Methods",
             "pages": [
-              "api-reference/payment-methods"
+              "api-reference/payment-methods/index",
+              "api-reference/payment-methods/create",
+              "api-reference/payment-methods/customer",
+              "api-reference/payment-methods/get",
+              "api-reference/payment-methods/update",
+              "api-reference/payment-methods/set-default",
+              "api-reference/payment-methods/delete"
+            ]
+          },
+          {
+            "group": "Payments",
+            "pages": [
+              "api-reference/payments/index",
+              "api-reference/payments/verify",
+              "api-reference/payments/status"
             ]
           },
           {
             "group": "Webhooks",
             "pages": [
-              "api-reference/webhooks"
+              "api-reference/webhooks/index",
+              "api-reference/webhooks/inbound/nomba",
+              {
+                "group": "Endpoints",
+                "pages": [
+                  "api-reference/webhooks/endpoints/add",
+                  "api-reference/webhooks/endpoints/all",
+                  "api-reference/webhooks/endpoints/delete"
+                ]
+              },
+              {
+                "group": "Events",
+                "pages": [
+                  "api-reference/webhooks/events/catalog",
+                  "api-reference/webhooks/events/all",
+                  "api-reference/webhooks/events/deliveries"
+                ]
+              }
             ]
           },
           {
             "group": "Reconciliation",
             "pages": [
-              "api-reference/reconciliation"
+              "api-reference/reconciliation/index",
+              "api-reference/reconciliation/discrepancies",
+              "api-reference/reconciliation/resolve"
             ]
           }
         ]
