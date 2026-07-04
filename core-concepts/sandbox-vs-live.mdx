@@ -1,0 +1,43 @@
+---
+title: "Sandbox vs Live Mode"
+description: "Understand how test and live API keys work in Orflow."
+icon: "flask"
+---
+
+Orflow provides four API key slots that encode both **visibility** (publishable vs secret) and **environment** (test vs live).
+
+## Key Types
+
+| Key | Prefix | Visibility | Environment | Use Case |
+|-----|--------|------------|-------------|----------|
+| Public Test | `pk_test_...` | Publishable | Sandbox | Client-side SDK, development |
+| Secret Test | `sk_test_...` | Secret | Sandbox | Server-side, development |
+| Public Live | `pk_live_...` | Publishable | Production | Client-side SDK, production |
+| Secret Live | `sk_live_...` | Secret | Production | Server-side, production |
+
+## How Test vs Live Works
+
+- **Authentication**: Both test and live keys authenticate identically. The middleware identifies which key type was used and stores it in request context.
+- **Data isolation**: Test and live keys access the **same data** in your tenant. They are not isolated databases — use separate projects for strict data separation.
+- **Payment provider**: Currently, the payment provider base URL is a deployment-level setting, not a per-request switch. Both test and live keys route to the same provider endpoint.
+- **Rate limiting**: Test and live keys share the same rate limit bucket per tenant.
+
+## Key Enforcement
+
+Currently, Orflow enforces two levels of key access:
+
+| Scope | Allowed Keys | Endpoints |
+|-------|-------------|-----------|
+| **Any key** | `pk_test`, `sk_test`, `pk_live`, `sk_live` | Read-only resource endpoints |
+| **Secret key only** | `sk_test`, `sk_live` | Reconciliation resolve, webhook endpoint management |
+
+<Note>
+The test/live enforcement is structurally plumbed but semantically dormant. Future updates will fully isolate test and live environments, including separate payment provider routing and data scoping.
+</Note>
+
+## Best Practices
+
+- **Development**: Always use `sk_test` during development and testing.
+- **Production**: Switch to `sk_live` only when ready for live transactions.
+- **Key rotation**: Rotate keys regularly. Regenerate immediately if a key is exposed.
+- **Never expose secret keys** in client-side code, mobile apps, or public repositories.

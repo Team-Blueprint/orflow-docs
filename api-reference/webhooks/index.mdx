@@ -3,4 +3,8 @@ title: "Webhooks API"
 sidebarTitle: "Overview"
 ---
 
-Endpoints for receiving inbound payment provider events and configuring outbound webhook endpoints for real-time event notifications.
+Endpoints for receiving inbound payment provider events (Nomba) and managing outbound webhook destinations.
+
+- `/inbound/nomba` — Public endpoint for Nomba to send events
+- `/endpoints/*` — Manage your webhook destinations (requires `sk_` key)
+- `/events/*` — View event history and delivery attempts (requires `sk_` key)

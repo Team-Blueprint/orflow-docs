@@ -2,3 +2,20 @@
 title: "Cancel Subscription"
 openapi: "POST /v1/subscriptions/{subscription_id}/cancel"
 ---
+
+Immediately cancel a subscription. Stops all future billing.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `subscription_id` | string (UUID) | Unique identifier of the subscription |
+
+**Response:**
+Returns the `SubscriptionRead` object with `status: "canceled"`.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

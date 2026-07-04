@@ -2,3 +2,34 @@
 title: "Payment Status"
 openapi: "GET /v1/payments/{reference}/status"
 ---
+
+Check payment status using internal database records. Does not call the payment provider API.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `reference` | string (UUID) | The invoice ID to check |
+
+**Response:**
+
+```json
+{
+  "transaction_id": "3f7c1a2b-...",
+  "status": "verified_successful",
+  "amount_minor": 10000,
+  "message": "Internal verification: verified_successful",
+  "raw": {
+    "invoice_status": "paid",
+    "subscription_status": "active",
+    "payment_attempt_status": "success",
+    "verification_method": "internal_database"
+  }
+}
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

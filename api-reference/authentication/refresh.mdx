@@ -2,3 +2,15 @@
 title: "Refresh Token"
 openapi: "POST /v1/auth/refresh"
 ---
+
+Exchange the refresh token (from http-only cookie) for a new token pair. New tokens are set as http-only cookies.
+
+**Response:**
+
+```json
+{
+  "message": "Tokens refreshed"
+}
+```
+
+**Notes:** No `X-API-Key` required. Requires the `refresh_token` http-only cookie.

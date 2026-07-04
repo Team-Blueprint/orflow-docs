@@ -2,3 +2,27 @@
 title: "Event Catalog"
 openapi: "GET /v1/webhooks/events/catalog"
 ---
+
+Returns a list of all available webhook event types that the platform can emit.
+
+**Response:**
+
+```json
+{
+  "events": [
+    {"type": "subscription.activated", "description": "Fired when a subscription becomes active."},
+    {"type": "subscription.paused", "description": "Fired when a subscription is paused."},
+    {"type": "subscription.canceled", "description": "Fired when a subscription is canceled."},
+    {"type": "subscription.trial_ending", "description": "Fired when a trial period ends."},
+    {"type": "invoice.paid", "description": "Fired when an invoice is successfully paid."},
+    {"type": "invoice.payment_failed", "description": "Fired when an invoice payment fails."},
+    {"type": "payment_method.attached", "description": "Fired when a new payment method is attached."}
+  ]
+}
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes (`sk_` key only) |

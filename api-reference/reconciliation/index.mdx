@@ -4,3 +4,6 @@ sidebarTitle: "Overview"
 ---
 
 Endpoints for identifying and resolving transaction discrepancies between Orflow and payment provider records.
+
+- `GET /discrepancies` — Paginated list with filters
+- `PATCH /discrepancies/{id}/resolve` — Mark as resolved (requires `sk_` key)

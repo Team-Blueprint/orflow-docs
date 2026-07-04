@@ -2,3 +2,42 @@
 title: "Sign Up"
 openapi: "POST /v1/auth/signup"
 ---
+
+Register a new tenant account. Tokens are set as http-only cookies and also returned in the response body.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string (1-255) | yes | Full name or organization name |
+| `email` | string (email) | yes | Email address (used for login) |
+| `password` | string (min 8) | yes | Password |
+
+**Example Request:**
+
+```json
+{
+  "name": "Your Name",
+  "email": "you@example.com",
+  "password": "secure_password"
+}
+```
+
+**Response:**
+
+```json
+{
+  "tenant": {
+    "id": "3f7c1a2b-...",
+    "name": "Your Name",
+    "email": "you@example.com",
+    "is_active": true,
+    "created_at": "2024-01-15T10:30:00Z"
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "bearer"
+}
+```
+
+**Notes:** No `X-API-Key` required.

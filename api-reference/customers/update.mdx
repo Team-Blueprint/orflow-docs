@@ -2,3 +2,28 @@
 title: "Update Customer"
 openapi: "PATCH /v1/customers/{customer_id}/update"
 ---
+
+Partially update a customer.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `customer_id` | string (UUID) | Unique identifier of the customer |
+
+**Request Body:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `email` | string | New email address |
+| `name` | string | New full name |
+| `external_id` | string | New external identifier |
+
+**Response:**
+Returns the updated `CustomerRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

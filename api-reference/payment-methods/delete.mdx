@@ -2,3 +2,20 @@
 title: "Delete Payment Method"
 openapi: "DELETE /v1/payment-methods/{payment_method_id}/del"
 ---
+
+Permanently delete a payment method. If it was the default, the next most recent method becomes default.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `payment_method_id` | string (UUID) | Unique identifier of the payment method |
+
+**Response:**
+Status `204 No Content` on success.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

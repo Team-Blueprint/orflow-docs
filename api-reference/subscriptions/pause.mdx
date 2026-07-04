@@ -2,3 +2,20 @@
 title: "Pause Subscription"
 openapi: "POST /v1/subscriptions/{subscription_id}/pause"
 ---
+
+Pause an active subscription. No billing occurs while paused. Can be resumed later.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `subscription_id` | string (UUID) | Unique identifier of the subscription |
+
+**Response:**
+Returns the `SubscriptionRead` object with `status: "paused"`.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

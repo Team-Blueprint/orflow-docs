@@ -2,3 +2,22 @@
 title: "View API Keys"
 openapi: "GET /v1/auth/keys/new"
 ---
+
+Return all four API key slots. Slots that have never been created appear as `null`.
+
+**Auth:** Requires JWT (dashboard users only).
+
+**Response:**
+
+```json
+{
+  "pk_test": "pk_test_a1b2c3...",
+  "sk_test": "sk_test_d4e5f6...",
+  "pk_live": "pk_live_g7h8i9...",
+  "sk_live": "sk_live_j0k1l2...",
+  "pk_test_active": true,
+  "sk_test_active": true,
+  "pk_live_active": false,
+  "sk_live_active": false
+}
+```

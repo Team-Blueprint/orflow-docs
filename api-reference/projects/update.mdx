@@ -2,3 +2,27 @@
 title: "Update Project"
 openapi: "PATCH /v1/projects/{project_id}/update"
 ---
+
+Update a project's name or description.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `project_id` | string (UUID) | Unique identifier of the project |
+
+**Request Body:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | New name |
+| `description` | string | New description |
+
+**Response:**
+Returns the updated `ProjectRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

@@ -2,3 +2,37 @@
 title: "List Plans"
 openapi: "GET /v1/plans/list"
 ---
+
+Retrieve all plans for a project.
+
+**Query Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `active_only` | boolean | If `true`, returns only non-archived plans. Default: `false` |
+| `offset` | integer | Number of records to skip. Default: `0` |
+| `limit` | integer | Max records to return. Default: `100` |
+
+**Response:**
+
+```json
+[
+  {
+    "id": "3f7c1a2b-...",
+    "name": "Premium Plan",
+    "amount": 100.00,
+    "currency": "NGN",
+    "interval": "monthly",
+    "interval_count": 1,
+    "status": "active",
+    "created_at": "2024-01-15T10:30:00Z"
+  }
+]
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
+| `X-Project-ID` | Yes |

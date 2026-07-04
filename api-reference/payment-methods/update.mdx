@@ -2,3 +2,29 @@
 title: "Update Payment Method"
 openapi: "PATCH /v1/payment-methods/{payment_method_id}/update"
 ---
+
+Partially update a payment method.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `payment_method_id` | string (UUID) | Unique identifier of the payment method |
+
+**Request Body:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | string | New status (e.g. `active`, `expired`) |
+| `is_default` | boolean | Set as customer's default |
+| `expiry_month` | integer | New expiry month |
+| `expiry_year` | integer | New expiry year |
+
+**Response:**
+Returns the updated `PaymentMethodRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

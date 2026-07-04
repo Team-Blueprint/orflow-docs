@@ -2,3 +2,30 @@
 title: "Nomba Webhook Inbound"
 openapi: "POST /v1/webhooks/inbound/nomba"
 ---
+
+Receive payment events from Nomba. Orflow verifies the HMAC-SHA256 signature before processing.
+
+**Headers:**
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `nomba-signature` | yes | HMAC-SHA256 signature for verification |
+| `nomba-timestamp` | yes | Request timestamp |
+| `nomba-event-id` | no | Unique event ID |
+
+**Request:**
+
+```json
+{
+  "event_type": "charge.success",
+  "requestId": "req_abc123",
+  "data": {
+    "merchant": { ... },
+    "transaction": { ... },
+    "order": { ... },
+    "tokenizedCardData": { ... }
+  }
+}
+```
+
+**Notes:** This is a public endpoint. No `X-API-Key` required.

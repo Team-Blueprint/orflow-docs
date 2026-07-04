@@ -2,3 +2,26 @@
 title: "Resolve Discrepancy"
 openapi: "PATCH /v1/reconciliation/discrepancies/{discrepancy_id}/resolve"
 ---
+
+Mark a discrepancy as resolved. Requires an `sk_` API key.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `discrepancy_id` | string (UUID) | Unique identifier of the discrepancy |
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `resolution_note` | string | no | Note explaining the resolution |
+
+**Response:**
+Returns the updated `ReconciliationDiscrepancyRead` object with `resolved: true`.
+
+**Required Headers:**
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | `sk_test_...` or `sk_live_...` (platform keys) |

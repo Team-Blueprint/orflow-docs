@@ -2,3 +2,20 @@
 title: "Delete Webhook Endpoint"
 openapi: "DELETE /v1/webhooks/endpoints/{endpoint_id}"
 ---
+
+Permanently delete a webhook endpoint. No further events will be sent to it.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `endpoint_id` | string (UUID) | Unique identifier of the endpoint |
+
+**Response:**
+Status `204 No Content` on success.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes (`sk_` key only) |

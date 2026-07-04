@@ -2,3 +2,20 @@
 title: "Delete Customer"
 openapi: "DELETE /v1/customers/{customer_id}/del"
 ---
+
+Permanently delete a customer. Also removes payment methods and cancels active subscriptions.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `customer_id` | string (UUID) | Unique identifier of the customer |
+
+**Response:**
+Status `204 No Content` on success.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

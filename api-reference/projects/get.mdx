@@ -2,3 +2,20 @@
 title: "Get a Project"
 openapi: "GET /v1/projects/{project_id}"
 ---
+
+Retrieve a single project by ID.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `project_id` | string (UUID) | Unique identifier of the project |
+
+**Response:**
+Returns a `ProjectRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

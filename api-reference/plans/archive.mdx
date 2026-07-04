@@ -2,3 +2,21 @@
 title: "Archive a Plan"
 openapi: "POST /v1/plans/{plan_id}/archive"
 ---
+
+Archive a plan so it can no longer be subscribed to. Active subscriptions continue unaffected.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `plan_id` | string (UUID) | Unique identifier of the plan |
+
+**Response:**
+Returns the updated `PlanRead` object with `status: "archived"`.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
+| `X-Project-ID` | Yes |

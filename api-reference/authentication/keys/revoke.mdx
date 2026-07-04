@@ -2,3 +2,22 @@
 title: "Revoke API Key"
 openapi: "POST /v1/auth/keys/revoke"
 ---
+
+Soft-revoke one API key slot. The key value is retained but its active flag is set to `false`. Use regenerate to get a working key again.
+
+**Auth:** Requires JWT + CSRF token header.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key_type` | enum | yes | `pk_test`, `sk_test`, `pk_live`, or `sk_live` |
+
+**Response:**
+
+```json
+{
+  "key_type": "sk_test",
+  "revoked": true
+}
+```

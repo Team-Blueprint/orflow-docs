@@ -35,7 +35,7 @@
           },
           {
             "group": "Core Concepts",
-            "pages": ["core-concepts/tenants-projects", "core-concepts/authentication"]
+            "pages": ["core-concepts/tenants-projects", "core-concepts/authentication", "core-concepts/sandbox-vs-live"]
           },
           {
             "group": "Guides",

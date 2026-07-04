@@ -2,3 +2,20 @@
 title: "Delete Project"
 openapi: "DELETE /v1/projects/{project_id}/del"
 ---
+
+Permanently delete a project and all associated data.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `project_id` | string (UUID) | Unique identifier of the project |
+
+**Response:**
+Status `204 No Content` on success.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

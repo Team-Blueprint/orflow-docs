@@ -3,6 +3,17 @@ title: "Authentication API"
 sidebarTitle: "Overview"
 ---
 
-Endpoints for managing tenant authentication, sessions, and API keys.
+Endpoints for managing tenant accounts, sessions, and API keys.
 
-Use the **Sign Up** endpoint to create a new tenant account, then **Sign In** to receive JWT tokens for dashboard access. For programmatic API access, use the **API Keys** endpoints to manage your test and live key slots.
+**Public endpoints** (no API key required):
+- `POST /v1/auth/signup` — Register
+- `POST /v1/auth/signin` — Login
+- `POST /v1/auth/refresh` — Refresh tokens
+- `POST /v1/auth/logout` — Logout
+
+**JWT-protected** (dashboard users):
+- `GET /v1/auth/me` — Current tenant profile
+- `GET /v1/auth/keys/new` — View all key slots
+- `POST /v1/auth/keys/create` — Create a new key
+- `POST /v1/auth/keys/regenerate` — Replace a key
+- `POST /v1/auth/keys/revoke` — Revoke a key slot

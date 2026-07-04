@@ -2,3 +2,23 @@
 title: "Create API Key"
 openapi: "POST /v1/auth/keys/create"
 ---
+
+Create a key for a slot that has never been issued. Returns `409` if the slot already has a key.
+
+**Auth:** Requires JWT + CSRF token header.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `key_type` | enum | yes | `pk_test`, `sk_test`, `pk_live`, or `sk_live` |
+
+**Response:**
+
+```json
+{
+  "key_type": "sk_test",
+  "value": "sk_test_newKeyValue...",
+  "active": true
+}
+```

@@ -2,3 +2,66 @@
 title: "Create Subscription"
 openapi: "POST /v1/subscriptions/create"
 ---
+
+Create a new subscription linking a customer to a plan.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `customer_id` | string (UUID) | yes | The customer to subscribe |
+| `plan_id` | string (UUID) | yes | The plan to subscribe to |
+| `payment_method_id` | string (UUID) | no | Default payment method for recurring charges |
+| `trial` | boolean | no | If `true`, applies the plan's trial period. Default: `false` |
+
+**Behavior:**
+- If `trial: true` and the plan has `trial_period_days`, the subscription starts in `trialing` state.
+- If no trial, a checkout session is initiated for the first payment. The response includes `checkout_link` and `order_reference`.
+
+**Example Request:**
+
+```json
+{
+  "customer_id": "3f7c1a2b-...",
+  "plan_id": "4d8e2b3c-...",
+  "payment_method_id": "5e9f3c4d-...",
+  "trial": true
+}
+```
+
+**Response (with trial):**
+
+```json
+{
+  "subscription": {
+    "id": "6a0b4d5e-...",
+    "customer_id": "3f7c1a2b-...",
+    "plan_id": "4d8e2b3c-...",
+    "status": "trialing",
+    "current_period_start": "2024-01-15T10:30:00Z",
+    "current_period_end": "2024-01-29T10:30:00Z",
+    "trial_end": "2024-01-29T10:30:00Z"
+  },
+  "checkout_link": null,
+  "order_reference": null
+}
+```
+
+**Response (instant charge):**
+
+```json
+{
+  "subscription": {
+    "id": "6a0b4d5e-...",
+    "status": "active"
+  },
+  "checkout_link": "https://pay.orflow.io/abc123",
+  "order_reference": "ORD_xyz789"
+}
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

@@ -2,3 +2,42 @@
 title: "Change Plan"
 openapi: "POST /v1/subscriptions/{subscription_id}/change-plan"
 ---
+
+Switch an active subscription to a new plan with pro-rated billing. The net amount is charged immediately.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `subscription_id` | string (UUID) | Unique identifier of the subscription |
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `new_plan_id` | string (UUID) | yes | The plan to switch to |
+
+**Response:**
+
+```json
+{
+  "subscription": {
+    "id": "6a0b4d5e-...",
+    "plan_id": "4d8e2b3c-...",
+    "status": "active"
+  },
+  "invoice": { ... },
+  "line_items": [
+    {"description": "Credit for unused time on Old Plan", "amount_minor": -5000},
+    {"description": "Charge for remaining time on New Plan", "amount_minor": 8000}
+  ],
+  "charged": true,
+  "payment_status": "success"
+}
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

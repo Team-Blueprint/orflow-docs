@@ -2,3 +2,39 @@
 title: "Sign In"
 openapi: "POST /v1/auth/signin"
 ---
+
+Authenticate with email and password. Tokens are set as http-only cookies and returned in the body.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `email` | string (email) | yes | Account email |
+| `password` | string | yes | Account password |
+
+**Example Request:**
+
+```json
+{
+  "email": "you@example.com",
+  "password": "your_password"
+}
+```
+
+**Response:**
+
+```json
+{
+  "tenant": {
+    "id": "3f7c1a2b-...",
+    "name": "Your Name",
+    "email": "you@example.com",
+    "is_active": true
+  },
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs...",
+  "token_type": "bearer"
+}
+```
+
+**Notes:** No `X-API-Key` required.

@@ -2,3 +2,20 @@
 title: "List Customer Payment Methods"
 openapi: "GET /v1/payment-methods/customer/{customer_id}"
 ---
+
+List all payment methods for a customer.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `customer_id` | string (UUID) | Unique identifier of the customer |
+
+**Response:**
+Returns a list of `PaymentMethodRead` objects.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

@@ -2,3 +2,20 @@
 title: "Resume Subscription"
 openapi: "POST /v1/subscriptions/{subscription_id}/resume"
 ---
+
+Resume a paused subscription back to `active` status.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `subscription_id` | string (UUID) | Unique identifier of the subscription |
+
+**Response:**
+Returns the `SubscriptionRead` object with `status: "active"`.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

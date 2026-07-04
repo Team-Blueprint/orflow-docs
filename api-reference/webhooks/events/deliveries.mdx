@@ -2,3 +2,32 @@
 title: "Event Deliveries"
 openapi: "GET /v1/webhooks/events/{event_id}/deliveries"
 ---
+
+List delivery attempts for a specific event, including status codes and response bodies.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `event_id` | string (UUID) | Unique identifier of the event |
+
+**Response:**
+
+```json
+[
+  {
+    "id": "...",
+    "event_id": "...",
+    "status_code": 200,
+    "response_body": "OK",
+    "attempt_number": 1,
+    "created_at": "2024-01-15T10:30:00Z"
+  }
+]
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes (`sk_` key only) |

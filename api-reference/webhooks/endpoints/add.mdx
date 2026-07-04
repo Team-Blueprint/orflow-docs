@@ -2,3 +2,40 @@
 title: "Create Webhook Endpoint"
 openapi: "POST /v1/webhooks/endpoints/add"
 ---
+
+Register a new webhook destination URL for outbound events.
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `url` | string | yes | HTTPS URL that will receive POST requests |
+| `description` | string | no | Description of this endpoint |
+
+**Example Request:**
+
+```json
+{
+  "url": "https://your-app.com/webhooks/orflow",
+  "description": "Production webhook handler"
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "3f7c1a2b-...",
+  "url": "https://your-app.com/webhooks/orflow",
+  "secret": "whsec_a1b2c3...",
+  "description": "Production webhook handler",
+  "is_active": true,
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes (`sk_` key only) |

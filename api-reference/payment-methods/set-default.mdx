@@ -2,3 +2,20 @@
 title: "Set Default Payment Method"
 openapi: "POST /v1/payment-methods/{payment_method_id}/set-default"
 ---
+
+Mark a payment method as the default for its customer.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `payment_method_id` | string (UUID) | Unique identifier of the payment method |
+
+**Response:**
+Returns the `PaymentMethodRead` object with `is_default: true`.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |

@@ -2,3 +2,30 @@
 title: "Update a Plan"
 openapi: "PATCH /v1/plans/{plan_id}/update"
 ---
+
+Modify an existing plan. Only provided fields are updated. Archived plans cannot be modified.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `plan_id` | string (UUID) | Unique identifier of the plan |
+
+**Request Body:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `name` | string | New display name |
+| `status` | enum | New status (`active` or `archived`) |
+| `trial_period_days` | integer | New trial duration |
+| `installments_count` | integer | New installment limit (`null` = unlimited) |
+
+**Response:**
+Returns the updated `PlanRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
+| `X-Project-ID` | Yes |

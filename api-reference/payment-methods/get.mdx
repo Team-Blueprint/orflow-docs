@@ -2,3 +2,20 @@
 title: "Get Payment Method"
 openapi: "GET /v1/payment-methods/{payment_method_id}/get"
 ---
+
+Retrieve a specific payment method by ID.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `payment_method_id` | string (UUID) | Unique identifier of the payment method |
+
+**Response:**
+Returns a `PaymentMethodRead` object.
+
+**Required Headers:**
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
