@@ -14,17 +14,14 @@ All API requests use a single base URL:
 
 ## API Keys
 
-Orflow provides four API key slots per tenant. The key prefix determines both the key type and which payment environment is used.
+Orflow provides four API key slots per tenant.
 
-| Key | Prefix | Visibility | Environment | Use Case |
-|-----|--------|------------|-------------|----------|
-| Public Test | `pk_test_...` | Publishable | Sandbox | Client-side SDK, development |
-| Secret Test | `sk_test_...` | Secret | Sandbox | Server-side, development |
-| Public Live | `pk_live_...` | Publishable | Live | Client-side SDK, production |
-| Secret Live | `sk_live_...` | Secret | Live | Server-side, production |
-
-**Test keys** route payment operations to the sandbox Nomba gateway.  
-**Live keys** route to the live Nomba gateway.
+| Key | Prefix | Visibility | Use Case |
+|-----|--------|------------|----------|
+| Public Test | `pk_test_...` | Publishable | Client-side SDK, development |
+| Secret Test | `sk_test_...` | Secret | Server-side, development |
+| Public Live | `pk_live_...` | Publishable | Client-side SDK, production |
+| Secret Live | `sk_live_...` | Secret | Server-side, production |
 
 <Warning>
 Never use live API keys in development. Never commit secret keys to version control.
@@ -33,30 +30,27 @@ Never use live API keys in development. Never commit secret keys to version cont
 ## Making API Calls
 
 ```bash
-# Sandbox (testing)
 curl -H "X-API-Key: sk_test_..." \
      -H "X-Project-ID: your_project_uuid" \
      {{ API_BASE_URL }}/v1/plans/list
-
-# Live (production)
-curl -H "X-API-Key: sk_live_..." \
-     -H "X-Project-ID: your_project_uuid" \
-     {{ API_BASE_URL }}/v1/plans/list
 ```
+
+## Required Headers
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | Your API key (`sk_test_...` or `sk_live_...`) |
+| `X-Project-ID` | For project-scoped endpoints | Your project UUID |
 
 ## Environment Variables
 
 Store keys securely in your environment:
 
 ```bash
-# .env.local (sandbox)
+# .env.local
 ORFLOW_API_KEY=sk_test_abc123...
 ORFLOW_PROJECT_ID=proj_abc123...
 ORFLOW_BASE_URL={{ API_BASE_URL }}
-
-# Production environment
-ORFLOW_API_KEY=sk_live_xyz789...
-ORFLOW_PROJECT_ID=proj_xyz789...
 ```
 
 <Warning>

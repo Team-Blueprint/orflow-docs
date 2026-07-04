@@ -1,60 +1,36 @@
 ---
 title: "Sandbox vs Live Mode"
-description: "How test and live API keys route to different payment environments."
+description: "Understand the current state of test and live API keys in Orflow."
 icon: "flask"
 ---
 
-Orflow supports two environments: **Sandbox** for testing and **Live** for production. The environment is determined by which API key you use to authenticate.
+Orflow provides four API key slots that encode **visibility** (publishable vs secret) and **environment** (test vs live). However, the test/live distinction is currently structural only — there is no separate sandbox environment or isolated data store.
 
-## How It Works
+## Current State
 
-| Key Type | Environment | Payment Routing | Use Case |
-|----------|-------------|-----------------|----------|
-| `pk_test_...` / `sk_test_...` | Sandbox | Routes to sandbox Nomba URL | Development, testing, CI/CD |
-| `pk_live_...` / `sk_live_...` | Live | Routes to live Nomba URL | Production payments |
+| Aspect | Test Keys (`pk_test`/`sk_test`) | Live Keys (`pk_live`/`sk_live`) |
+|--------|-------------------------------|-------------------------------|
+| **Base URL** | Same (`{{ API_BASE_URL }}`) | Same (`{{ API_BASE_URL }}`) |
+| **Data isolation** | Shared | Shared |
+| **Authentication** | Works identically | Works identically |
+| **Payment provider** | Same endpoint | Same endpoint |
 
-When you make a request with a test key, Orflow automatically routes payment operations to the sandbox payment gateway. Live keys route to the production gateway.
+There is currently **no enforcement** distinguishing test from live behavior. All four key types authenticate against the same backend and access the same data.
 
-## Base URL
+## What Is Enforced
 
-Both environments use the same API base URL:
-
-```
-{{ API_BASE_URL }}
-```
-
-The environment distinction happens at the payment provider level — not at the API endpoint level.
-
-## Authentication
-
-| Header | Required | Description |
-|--------|----------|-------------|
-| `X-API-Key` | Yes | Your API key (`sk_test_...` or `sk_live_...`) |
-
-The key prefix determines which payment environment to use.
-
-## Credentials
-
-Each environment requires its own set of Nomba credentials configured on the server:
-
-| Setting | Sandbox | Live |
-|---------|---------|------|
-| Base URL | `NOMBA_SANDBOX_BASE_URL` | `NOMBA_LIVE_BASE_URL` |
-| Client ID | `NOMBA_SANDBOX_CLIENT_ID` | `NOMBA_LIVE_CLIENT_ID` |
-| Client Secret | `NOMBA_SANDBOX_CLIENT_SECRET` | `NOMBA_LIVE_CLIENT_SECRET` |
-| Account ID | `NOMBA_SANDBOX_ACCOUNT_ID` | `NOMBA_LIVE_ACCOUNT_ID` |
-
-## Data Isolation
-
-Currently, sandbox and live keys operate on **shared data** within your tenant. Test and live transactions are tracked separately in the payment provider but appear together in Orflow.
-
-<Note>
-Full data isolation between sandbox and live environments is planned for a future release.
-</Note>
+| Scope | Allowed Keys | Endpoints |
+|-------|-------------|-----------|
+| **Any key** | All four slots | Read-only resource access |
+| **Secret key only** | `sk_test`, `sk_live` | Reconciliation resolve, webhook endpoint management |
 
 ## Best Practices
 
-- **Development**: Always use `sk_test_...` during development and testing
-- **Production**: Switch to `sk_live_...` when ready for live transactions
-- **Key rotation**: Regenerate a key immediately if exposed
-- **Never expose secret keys** in client-side code, mobile apps, or public repositories
+- **Development**: Use `sk_test` during development.
+- **Production**: Switch to `sk_live` when ready for production.
+- **Key rotation**: Regenerate a key immediately if it's exposed.
+- **Never expose secret keys** in client-side code, mobile apps, or public repositories.
+
+<Note>
+Full sandbox/live isolation (separate databases, payment provider routing, rate limits) is planned for a future release.
+</Note>

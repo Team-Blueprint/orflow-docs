@@ -3,17 +3,14 @@ title: "Authentication API"
 sidebarTitle: "Overview"
 ---
 
-Endpoints for managing tenant accounts, sessions, and API keys.
+Endpoints for managing API keys for programmatic access to the Orflow API.
 
-**Public endpoints** (no API key required):
-- `POST /v1/auth/signup` — Register
-- `POST /v1/auth/signin` — Login
-- `POST /v1/auth/refresh` — Refresh tokens
-- `POST /v1/auth/logout` — Logout
+**Available endpoints:**
+- `GET /v1/auth/keys/new` — View all four API key slots and their active status
+- `POST /v1/auth/keys/create` — Generate a new key for an unused slot
+- `POST /v1/auth/keys/regenerate` — Replace an existing key (old key stops working immediately)
+- `POST /v1/auth/keys/revoke` — Soft-revoke a key slot
 
-**JWT-protected** (dashboard users):
-- `GET /v1/auth/me` — Current tenant profile
-- `GET /v1/auth/keys/new` — View all key slots
-- `POST /v1/auth/keys/create` — Create a new key
-- `POST /v1/auth/keys/regenerate` — Replace a key
-- `POST /v1/auth/keys/revoke` — Revoke a key slot
+<Note>
+These endpoints require JWT authentication (dashboard session). They are not accessible via API key.
+</Note>
