@@ -1,0 +1,122 @@
+---
+title: "Subscriptions"
+description: "Create and manage customer subscriptions with trial periods, plan changes, and lifecycle controls."
+icon: "repeat"
+---
+
+Subscriptions link customers to billing plans and manage the recurring payment lifecycle.
+
+## Create a Subscription
+
+Create a new subscription for a customer to a plan:
+
+```bash
+POST /v1/subscriptions/create
+```
+
+**Request:**
+```json
+{
+  "customer_id": "uuid",
+  "plan_id": "uuid",
+  "payment_method_id": "uuid",
+  "trial_period_days": 14
+}
+```
+
+<Note>
+If the plan has a trial period, the subscription starts in `trialing` state. Otherwise, it initiates a checkout session and returns a `checkout_link` and `order_reference` for the first payment.
+</Note>
+
+**Response (with trial):**
+```json
+{
+  "id": "uuid",
+  "customer_id": "uuid",
+  "plan_id": "uuid",
+  "status": "trialing",
+  "current_period_start": "2024-01-15T10:30:00Z",
+  "current_period_end": "2024-01-29T10:30:00Z",
+  "trial_end": "2024-01-29T10:30:00Z"
+}
+```
+
+**Response (instant charge):**
+```json
+{
+  "id": "uuid",
+  "customer_id": "uuid",
+  "plan_id": "uuid",
+  "status": "active",
+  "checkout_link": "https://pay.orflow.io/abc123",
+  "order_reference": "ORD_xyz789"
+}
+```
+
+## Cancel a Subscription
+
+Transitions a subscription to `canceled` status immediately. Stops all future billing:
+
+```bash
+POST /v1/subscriptions/{subscription_id}/cancel
+```
+
+## Pause a Subscription
+
+Transitions an active subscription to `paused` status. No billing occurs while paused:
+
+```bash
+POST /v1/subscriptions/{subscription_id}/pause
+```
+
+## Resume a Subscription
+
+Transitions a paused subscription back to `active`:
+
+```bash
+POST /v1/subscriptions/{subscription_id}/resume
+```
+
+## Change Plan with Proration
+
+Switch an active subscription to a new plan, crediting unused time on the old plan and charging the new plan pro-rata:
+
+```bash
+POST /v1/subscriptions/{subscription_id}/change-plan
+```
+
+**Request:**
+```json
+{
+  "new_plan_id": "uuid"
+}
+```
+
+<Note>
+The net amount is charged immediately. A failed charge falls into the dunning flow.
+</Note>
+
+## Get Audit Log
+
+Returns the full history of state transitions for a subscription, newest first:
+
+```bash
+GET /v1/subscriptions/{subscription_id}/audit-log
+```
+
+## Required Headers
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
+| `X-Project-ID` | Yes |
+
+## Subscription States
+
+| State | Description |
+|-------|-------------|
+| `trialing` | In trial period, no charge yet |
+| `active` | Active and billing regularly |
+| `past_due` | Payment failed, in dunning flow |
+| `paused` | Manually paused, no billing |
+| `canceled` | Canceled, no further billing |

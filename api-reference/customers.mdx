@@ -1,0 +1,91 @@
+---
+title: "Customers"
+description: "Create and manage customers who hold subscriptions and payment methods."
+icon: "user"
+---
+
+Customers represent the entities that hold subscriptions and payment methods in your Orflow workspace.
+
+## Create a Customer
+
+Register a new customer:
+
+```bash
+POST /v1/customers/create
+```
+
+**Request:**
+```json
+{
+  "email": "customer@example.com",
+  "name": "John Doe",
+  "phone": "+2348012345678",
+  "metadata": {
+    "source": "website"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "email": "customer@example.com",
+  "name": "John Doe",
+  "phone": "+2348012345678",
+  "metadata": { "source": "website" },
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+## List Customers
+
+Retrieve a paginated list of all customers:
+
+```bash
+GET /v1/customers/all?offset=0&limit=100
+```
+
+## Get a Customer
+
+Retrieve a single customer by ID:
+
+```bash
+GET /v1/customers/{customer_id}
+```
+
+## Update a Customer
+
+Partially update a customer's information:
+
+```bash
+PATCH /v1/customers/{customer_id}/update
+```
+
+**Request:**
+```json
+{
+  "name": "Jane Doe",
+  "phone": "+2348098765432",
+  "metadata": { "source": "referral", "tier": "vip" }
+}
+```
+
+## Delete a Customer
+
+Permanently delete a customer and their associated data:
+
+```bash
+DELETE /v1/customers/{customer_id}/del
+```
+
+<Warning>
+Deleting a customer will also remove their payment methods and cancel any active subscriptions.
+</Warning>
+
+## Required Headers
+
+| Header | Required |
+|--------|----------|
+| `X-API-Key` | Yes |
+| `X-Project-ID` | Yes |

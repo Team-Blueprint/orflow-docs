@@ -1,0 +1,50 @@
+---
+title: "Getting Started"
+description: "Follow this guide to integrate the Orflow billing API into your application."
+icon: "rocket"
+---
+
+Welcome to Orflow! This guide will help you set up your first project, generate API keys, and make your first API request.
+
+## Prerequisites
+
+- An Orflow tenant account.
+- A basic understanding of your backend's API communication.
+
+## Step 1: Create a Project
+
+Projects provide logical separation within your tenant.
+
+1. Log in to the [Orflow Dashboard](https://app.orflow.io).
+2. Create a new project (e.g., "Main Product").
+3. Note the Project UUID from the project settings.
+
+## Step 2: Get API Keys
+
+Each tenant has four API key slots:
+
+- `pk_test`: Public test key
+- `sk_test`: Secret test key (for development)
+- `pk_live`: Public live key
+- `sk_live`: Secret live key (for production)
+
+<Warning>
+**NEVER** share your secret keys (`sk_test_...` or `sk_live_...`). They provide full access to your Orflow data.
+</Warning>
+
+## Step 3: Make Your First API Call
+
+Use your `sk_test` key and Project UUID to list customers:
+
+```bash
+curl -H "X-API-Key: sk_test_your_secret_key" \
+     -H "X-Project-ID: your_project_uuid" \
+     https://api.orflow.io/v1/customers/all
+```
+
+If successful, you will receive a 200 OK response with an empty list `[]` (if you have no customers yet).
+
+## Next Steps
+
+- [Manage Subscription Lifecycle](/guides/subscription-lifecycle)
+- [Configure Webhooks](/guides/handling-webhooks)

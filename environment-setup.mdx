@@ -1,0 +1,102 @@
+---
+title: "Environment Setup"
+description: "Configure your development and production environments for Orflow."
+icon: "cog"
+---
+
+Orflow provides two distinct environments: **Sandbox** for development/testing and **Live** for production. Understanding the differences is crucial for safe integration.
+
+## Environments Overview
+
+| Environment | Base URL | API Keys | Use Case |
+|-------------|----------|----------|----------|
+| **Sandbox** | `https://api-sandbox.orflow.io` | `pk_test_...`, `sk_test_...` | Development, testing, CI/CD |
+| **Live** | `https://api.orflow.io` | `pk_live_...`, `sk_live_...` | Production payments |
+
+<Note>
+Sandbox and Live environments are completely isolated. Data, API keys, webhooks, and customers do not transfer between them.
+</Note>
+
+## API Key Format
+
+Orflow API keys include the environment in their prefix:
+
+```
+sk_test_abc123...   # Sandbox secret key
+pk_test_xyz789...   # Sandbox public key
+sk_live_abc123...   # Live secret key
+pk_live_xyz789...   # Live public key
+```
+
+<Warning>
+Never use Live API keys in development. Never commit Live keys to version control. Rotate keys immediately if exposed.
+</Warning>
+
+## Switching Environments
+
+### Dashboard
+In the Orflow dashboard, use the **Environment Switcher** in the top-right corner to toggle between Sandbox and Live views.
+
+### API Requests
+Use the appropriate base URL and corresponding API keys:
+
+```bash
+# Sandbox
+curl -H "X-API-Key: sk_test_..." https://api-sandbox.orflow.io/v1/plans/list
+
+# Live
+curl -H "X-API-Key: sk_live_..." https://api.orflow.io/v1/plans/list
+```
+
+## Sandbox Features
+
+| Feature | Sandbox | Live |
+|---------|---------|------|
+| Real money movement | ❌ No | ✅ Yes |
+| Test card numbers | ✅ Yes | ❌ No |
+| Webhook delivery | ✅ Yes (to your test URLs) | ✅ Yes |
+| Rate limits | Relaxed | Standard |
+| Data retention | 30 days | Permanent |
+
+## Test Card Numbers (Sandbox Only)
+
+Use these card numbers in Sandbox to simulate different outcomes:
+
+| Card Number | Result |
+|-------------|--------|
+| `4242 4242 4242 4242` | ✅ Success |
+| `4000 0000 0000 0002` | ❌ Declined (card declined) |
+| `4000 0000 0000 9995` | ❌ Declined (insufficient funds) |
+| `4000 0000 0000 3220` | 🔐 Requires 3D Secure |
+| `4000 0000 0000 0069` | ⏳ Processing delay |
+
+Expiry: Any future date (e.g., `12/30`) | CVC: Any 3 digits
+
+## Webhook Testing in Sandbox
+
+1. Use a tunneling service like **ngrok** to expose your local server:
+   ```bash
+   ngrok http 3000
+   ```
+2. Configure the webhook URL in the dashboard (Sandbox mode)
+3. Use the **Webhook Tester** in the dashboard to send test events
+
+## Environment Variables
+
+Store keys securely in your environment:
+
+```bash
+# .env.local (development)
+ORFLOW_API_KEY=sk_test_abc123...
+ORFLOW_PROJECT_ID=proj_abc123...
+ORFLOW_WEBHOOK_SECRET=whsec_abc123...
+
+# Production environment
+ORFLOW_API_KEY=sk_live_xyz789...
+ORFLOW_PROJECT_ID=proj_xyz789...
+ORFLOW_WEBHOOK_SECRET=whsec_xyz789...
+```
+
+<Warning>
+Use separate `.env` files per environment. Never commit `.env` files to git.
+</Warning>

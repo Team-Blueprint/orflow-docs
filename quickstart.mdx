@@ -1,0 +1,91 @@
+---
+title: "Quickstart"
+description: "Start accepting recurring subscription payments in under 5 minutes."
+---
+
+This guide will walk you through the essential steps to authenticate your requests, define a subscription plan, generate a hosted checkout page for your customers, and verify subscription status.
+
+## Prerequisites
+
+Before getting started, make sure you have:
+- An account on [Orflow Dashboard](https://orflow.vercel.app)
+- A **Secret Key** (`sk_test_...`) from your Orflow Workspace Settings.
+- A HTTP client (like curl, Bruno, or Postman) or a backend server (Node.js, Python, Go, etc.) to run API requests.
+
+---
+
+## Guide
+
+<Steps>
+  <Step title="Retrieve your Secret Key">
+    Log in to the **Orflow Dashboard**, navigate to your workspace settings, and copy your Secret Key. 
+    
+    All server-side requests must authenticate by sending this key in the Authorization header:
+    ```bash
+    Authorization: Bearer sk_test_...
+    ```
+    
+    <Warning>
+      Keep your Secret Keys (`sk_test_...` and `sk_live_...`) strictly confidential. Never expose them on frontend clients, public repositories, or mobile applications.
+    </Warning>
+  </Step>
+
+  <Step title="Create your first subscription Plan">
+    To start accepting billing cycles, create a plan. Plans specify how much and how often a customer should be charged.
+    
+    Send a `POST` request to `/v1/plans/create` to create a plan with a major unit amount (e.g., `29.99` for $29.99):
+
+    ```bash
+    curl -X POST https://api.orflow.io/v1/plans/create \
+      -H "Authorization: Bearer sk_test_your_secret_key" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Pro Plan",
+        "description": "Access to advanced developer features",
+        "amount": 29.99,
+        "currency": "USD",
+        "interval": "monthly"
+      }'
+    ```
+
+    The response returns a unique `id` for your plan (e.g., `plan_abc123`). Keep track of this ID for the next step.
+  </Step>
+
+  <Step title="Generate a Checkout Link">
+    To onboard a subscriber, you can generate a hosted, secure, and ready-to-use checkout link. Send a `POST` request to `/v1/checkouts/create` referencing your `plan_id` and the customer's email address:
+
+    ```bash
+    curl -X POST https://api.orflow.io/v1/checkouts/create \
+      -H "Authorization: Bearer sk_test_your_secret_key" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "plan_id": "plan_abc123",
+        "customer_email": "customer@example.com"
+      }'
+    ```
+
+    The response returns a checkout URL:
+    ```json
+    {
+      "checkout_url": "https://checkout.orflow.io/pay/chk_xyz789"
+    }
+    ```
+    Simply redirect your user to this URL. Orflow and Nomba will handle card validation, security tokenization, and initial payment collection securely.
+  </Step>
+
+  <Step title="Listen for billing events via Webhooks">
+    Once the customer completes their checkout payment, Orflow tokenizes their payment method and schedules subsequent recurring bills.
+    
+    Your server can listen for webhooks to instantly update your user's entitlement:
+    
+    - `subscription.created`: Dispatched the moment checkout completes and a subscription becomes active.
+    - `subscription.charge.failed`: Dispatched if an auto-renewal fails (triggers standard retry logic).
+    - `subscription.cancelled`: Dispatched when a subscription is deactivated.
+  </Step>
+</Steps>
+
+## Need help?
+
+We are here to support your integration journey:
+- Join our [GitHub community](https://github.com/Team-Blueprint/orflow-backend) to ask questions or submit feature requests.
+- Contact developer support directly at [support@orflow.io](mailto:support@orflow.io) for production setup assistance.

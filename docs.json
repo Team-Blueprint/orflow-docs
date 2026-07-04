@@ -1,0 +1,150 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "palm",
+  "name": "Orflow",
+  "colors": {
+    "primary": "#f97316",
+    "light": "#f97316",
+    "dark": "#ea580c"
+  },
+  "favicon": "/favicon.svg",
+  "appearance": {
+    "default": "dark"
+  },
+  "fonts": {
+    "family": "Manrope"
+  },
+  "icons": {
+    "library": "tabler"
+  },
+  "background": {
+    "decoration": "gradient",
+    "color": {
+      "dark": "#09090b",
+      "light": "#ffffff"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "pages": [
+          {
+            "group": "Getting Started",
+            "pages": ["index", "quickstart", "environment-setup"]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": ["core-concepts/tenants-projects", "core-concepts/authentication"]
+          },
+          {
+            "group": "Guides",
+            "pages": ["guides/getting-started", "guides/handling-webhooks", "guides/subscription-lifecycle"]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "pages": [
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/authentication"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "api-reference/projects"
+            ]
+          },
+          {
+            "group": "Plans",
+            "pages": [
+              "api-reference/plans"
+            ]
+          },
+          {
+            "group": "Customers",
+            "pages": [
+              "api-reference/customers"
+            ]
+          },
+          {
+            "group": "Subscriptions",
+            "pages": [
+              "api-reference/subscriptions"
+            ]
+          },
+          {
+            "group": "Payment Methods",
+            "pages": [
+              "api-reference/payment-methods"
+            ]
+          },
+          {
+            "group": "Webhooks",
+            "pages": [
+              "api-reference/webhooks"
+            ]
+          },
+          {
+            "group": "Reconciliation",
+            "pages": [
+              "api-reference/reconciliation"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Dashboard",
+          "href": "https://orflow.vercel.app/dashboard",
+          "icon": "external-link"
+        },
+        {
+          "anchor": "Main Site",
+          "href": "https://orflow.vercel.app",
+          "icon": "globe"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://orflow.vercel.app"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:hi@orflow.io"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://orflow.vercel.app/dashboard"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Team-Blueprint/orflow-backend"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+---
+title: "Subscription Lifecycle"
+description: "Understand the lifecycle of a subscription, from creation to cancellation."
+icon: "repeat"
+---
+
+Subscriptions in Orflow follow a state-based lifecycle to manage recurring billing.
+
+## 1. Creating a Subscription
+
+When you create a subscription, you link a customer to a plan.
+
+```bash
+POST /v1/subscriptions/create
+{
+  "customer_id": "cust_uuid",
+  "plan_id": "plan_uuid",
+  "payment_method_id": "pm_uuid"
+}
+```
+
+## 2. Subscription States
+
+| State | Description |
+|-------|-------------|
+| `trialing` | The subscription is in a trial period. No charges occur. |
+| `active` | The subscription is active and will bill automatically. |
+| `past_due` | A payment failed. The dunning process begins. |
+| `paused` | The subscription is active but billing is stopped. |
+| `canceled` | The subscription is closed. No future billing. |
+
+## 3. Transitions
+
+- **Trial End**: Transitions `trialing` -> `active` automatically.
+- **Payment Success**: Renews the subscription.
+- **Payment Failure**: Transitions `active` -> `past_due`.
+- **Manual Pause**: Transitions `active` -> `paused`.
+- **Manual Cancel**: Transitions any state -> `canceled`.
+
+## 4. Best Practices
+
+- **Listen for Webhooks**: Monitor `subscription.created`, `subscription.activated`, and `subscription.canceled` to update your internal user status.
+- **Handle Past Due**: Inform users when a payment fails so they can update their payment method.
+- **Use Trials**: Use trial periods to reduce friction for new users.

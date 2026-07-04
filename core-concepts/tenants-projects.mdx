@@ -1,0 +1,61 @@
+---
+title: "Tenants and Projects"
+description: "Understand Orflow's organizational hierarchy: Tenants, Projects, and how they relate to API keys."
+icon: "building"
+---
+
+Orflow uses a two-level hierarchy to organize your billing resources.
+
+## Hierarchy
+
+```
+Tenant (Organization)
+└── Project A
+    ├── Plans
+    ├── Customers
+    ├── Subscriptions
+    ├── Payment Methods
+    └── Webhooks
+└── Project B
+    └── ...
+```
+
+## Tenant
+
+A **Tenant** represents your organization or company. It is the top-level container that holds:
+
+- **Authentication**: Your login credentials, JWT tokens
+- **API Keys**: Four key slots (pk_test, sk_test, pk_live, sk_live)
+- **Projects**: One or more projects
+- **Team Members**: Users with access to the dashboard
+
+## Project
+
+A **Project** is a logical workspace within a tenant. Each project has isolated:
+
+- **Plans**: Pricing tiers specific to this project
+- **Customers**: Customer records and their data
+- **Subscriptions**: Active and historical subscriptions
+- **Payment Methods**: Tokenized payment instruments
+- **Webhooks**: Outbound webhook endpoints and delivery logs
+- **API Keys**: The project inherits the tenant's API keys (scoped via `X-Project-ID` header)
+
+## API Key Scoping
+
+| Key Type | Scope | Use Case |
+|----------|-------|----------|
+| `pk_test` / `sk_test` | Tenant-wide | Sandbox testing |
+| `pk_live` / `sk_live` | Tenant-wide | Production |
+
+All API requests require the `X-API-Key` header. Project-scoped endpoints additionally require `X-Project-ID`.
+
+## When to Use Multiple Projects
+
+- **Multiple products/brands** under one company
+- **Different teams** needing separate billing data
+- **Different environments** (staging vs production) — though Sandbox/Live handles this too
+- **Client work** — each client gets their own project
+
+## Switching Projects
+
+In the dashboard, use the **Project Selector** in the top-left sidebar to switch between projects. Via API, include the `X-Project-ID` header with the project's UUID.

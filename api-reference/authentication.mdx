@@ -1,0 +1,144 @@
+---
+title: "Authentication"
+description: "Learn how to authenticate with the Orflow API using API keys or JWT tokens."
+icon: "key"
+---
+
+Orflow provides two authentication methods: **API Keys** for programmatic backend access, and **JWT-based session tokens** for dashboard access.
+
+## API Key Authentication
+
+All API requests (except auth endpoints) require an API key sent via the `X-API-Key` header. Each tenant has four API key slots:
+
+| Key Type | Purpose |
+|----------|---------|
+| `pk_test` | Public test key |
+| `sk_test` | Secret test key (for development) |
+| `pk_live` | Public live key |
+| `sk_live` | Secret live key (for production) |
+
+<Warning>
+Keep your secret keys (`sk_test_...` and `sk_live_...`) confidential. Never expose them in client-side code, public repositories, or mobile applications.
+</Warning>
+
+## Manage API Keys
+
+### View API Keys
+Retrieve all four API key values for your tenant:
+
+```bash
+GET /v1/auth/keys/new
+```
+
+<Note>
+This endpoint requires JWT authentication. It returns all four key values and their active status.
+</Note>
+
+### Create API Key
+Generate a new key for an unused slot:
+
+```bash
+POST /v1/auth/keys/create
+```
+
+**Request:**
+```json
+{
+  "key_type": "sk_test"
+}
+```
+
+### Regenerate API Key
+Replace an existing key. The old key becomes invalid immediately:
+
+```bash
+POST /v1/auth/keys/regenerate
+```
+
+**Request:**
+```json
+{
+  "key_type": "sk_test"
+}
+```
+
+### Revoke API Key
+Soft-revoke a key slot (disables it without deleting):
+
+```bash
+POST /v1/auth/keys/revoke
+```
+
+**Request:**
+```json
+{
+  "key_type": "sk_test"
+}
+```
+
+## JWT Authentication (Dashboard)
+
+### Sign Up
+Create a new tenant account:
+
+```bash
+POST /v1/auth/signup
+```
+
+**Request:**
+```json
+{
+  "name": "Your Name",
+  "email": "you@example.com",
+  "password": "your_password"
+}
+```
+
+### Sign In
+Authenticate and receive JWT tokens:
+
+```bash
+POST /v1/auth/signin
+```
+
+**Request:**
+```json
+{
+  "email": "you@example.com",
+  "password": "your_password"
+}
+```
+
+### Get Current Tenant
+Retrieve authenticated tenant's profile:
+
+```bash
+GET /v1/auth/me
+```
+
+### Refresh Tokens
+Exchange a refresh token for a new token pair:
+
+```bash
+POST /v1/auth/refresh
+```
+
+### Logout
+End the current session:
+
+```bash
+POST /v1/auth/logout
+```
+
+## Headers
+
+All business API endpoints require these headers:
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | Your API key (`sk_test_...` or `sk_live_...`) |
+| `X-Project-ID` | Yes | Your project ID (required for project-scoped endpoints) |
+
+<Note>
+The `X-Project-ID` header is required for project-scoped endpoints (customers, subscriptions, plans, payment methods, webhooks outbound, reconciliation).
+</Note>

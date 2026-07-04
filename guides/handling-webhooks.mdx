@@ -1,0 +1,46 @@
+---
+title: "Handling Webhooks"
+description: "Learn how to secure and process inbound webhooks from Orflow."
+icon: "webhook"
+---
+
+Webhooks are crucial for keeping your application in sync with billing events.
+
+## 1. Security (Verification)
+
+Orflow signs webhook requests to ensure they originate from us.
+
+1. Orflow sends a request with `nomba-signature` and `nomba-timestamp` headers.
+2. Calculate the HMAC-SHA256 signature using your endpoint secret and the request body.
+3. Compare your calculated signature with the `nomba-signature` header.
+
+## 2. Idempotency
+
+Some events might be delivered more than once.
+
+- Use the `nomba-event-id` (if available) to ensure you process each event exactly once.
+- Maintain a list of processed event IDs in your database to avoid duplicate actions (e.g., granting access twice).
+
+## 3. Acknowledgment
+
+Your endpoint should return a `200 OK` or `201 Created` status code promptly to acknowledge receipt. If you return an error or take too long, Orflow may retry the delivery.
+
+## 4. Example Processing (Node.js)
+
+```javascript
+app.post('/webhooks/orflow', (req, res) => {
+  const signature = req.headers['nomba-signature'];
+  // 1. Verify signature...
+  // 2. Check for duplicate (idempotency)...
+  
+  const event = req.body;
+  
+  // 3. Process event...
+  if (event.event_type === 'charge.success') {
+    // Grant access to user
+  }
+
+  // 4. Acknowledge
+  res.status(200).send('Received');
+});
+```

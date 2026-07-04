@@ -1,0 +1,151 @@
+/* Orflow Documentation Custom Stylesheet */
+
+/* 1. Global Reset: Strictly NO rounded borders anywhere across the site */
+* {
+  border-radius: 0px !important;
+}
+
+/* 1.5 Use CSS custom properties for theme-aware styling */
+:root {
+  --card-bg-light: #fafafa;
+  --card-bg-dark: #18181b;
+  --card-text-light: #000;
+  --card-text-dark: #fafafa;
+  --card-border-light: #ddd;
+  --card-border-dark: #3f3f46;
+}
+
+/* Default (dark mode) - since "appearance.default" is set to "dark" in docs.json */
+:root,
+html:not(.light) {
+  --card-bg: var(--card-bg-dark);
+  --card-text: var(--card-text-dark);
+  --card-border: var(--card-border-dark);
+}
+
+/* Light mode - when the .light class is applied */
+html.light {
+  --card-bg: var(--card-bg-light);
+  --card-text: var(--card-text-light);
+  --card-border: var(--card-border-light);
+}
+
+/* 2. Apply primary button styles ONLY to specific buttons */
+/* Ensure dashboard button is visible on all screen sizes */
+#topbar-cta-button,
+#navbar-primary-button,
+header a[href*="dashboard"] {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(180deg, #f97316, #ea580c) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(234, 88, 12, 0.5) !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px 0 rgba(255, 255, 255, 0.1) !important;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease !important;
+  border-radius: 0px !important;
+  font-weight: 600 !important;
+  padding: 0 16px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  text-decoration: none !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  #topbar-cta-button {
+    display: none !important;
+  }
+}
+
+/* Ensure all text and icons inside dashboard buttons are white */
+#topbar-cta-button > *,
+#topbar-cta-button *:not(a),
+#topbar-cta-button a,
+#topbar-cta-button a *,
+#navbar-primary-button > *,
+#navbar-primary-button *:not(a),
+#navbar-primary-button a,
+#navbar-primary-button a *,
+a[href*="dashboard"].btn-primary > *,
+nav a[href*="dashboard"] > *,
+header a[href*="dashboard"] > * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+#topbar-cta-button:hover,
+#navbar-primary-button:hover,
+a[href*="dashboard"].btn-primary:hover,
+nav a[href*="dashboard"]:hover,
+header a[href*="dashboard"]:hover {
+  background: linear-gradient(180deg, #ea580c, #d97706) !important;
+  color: #ffffff !important;
+}
+
+#topbar-cta-button:active,
+#navbar-primary-button:active,
+a[href*="dashboard"].btn-primary:active,
+nav a[href*="dashboard"]:active,
+header a[href*="dashboard"]:active {
+  transform: scale(0.98) !important;
+}
+
+/* Ensure dashboard button is visible on mobile */
+@media (max-width: 768px) {
+  header a[href*="dashboard"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* 3. Style cards to look like our industrial-brutalist bento grid cells */
+.card,
+div[class*="Card"] {
+  background-color: var(--card-bg) !important;
+  color: var(--card-text) !important;
+  border: 1px solid var(--card-border) !important;
+  box-shadow: none !important;
+  transition: border-color 0.15s ease !important;
+}
+
+.card:hover,
+div[class*="Card"]:hover {
+  border-color: #bbb !important;
+  background-color: var(--card-bg) !important;
+}
+
+/* 4. Style Code Blocks and pre elements */
+pre,
+code,
+div[class*="CodeGroup"],
+div[class*="pre"],
+div[class*="Input"],
+div[class*="Search"],
+div[class*="PageCopy"],
+div[class*="Card"],
+div[class*="CardGroup"],
+div[class*="CardGroup"] > div,
+div[class*="Info"],
+div[class*="InfoDisplay"],
+div[class*="Instructions"],
+div[class*="InstructionsContent"] {
+  border-radius: 0px !important;
+}
+
+/* 5. Custom styles for tips, warnings, and callouts */
+div[class*="Callout"],
+div[class*="Info"],
+div[class*="Tip"],
+div[class*="Warning"],
+div[class*="Note"] {
+  border-radius: 0px !important;
+  border-left-width: 4px !important;
+}

@@ -1,0 +1,108 @@
+---
+title: "Authentication"
+description: "How to authenticate with Orflow API using API keys and JWT tokens."
+icon: "key"
+---
+
+Orflow provides two authentication methods: **API Keys** for server-to-server communication and **JWT tokens** for dashboard sessions.
+
+## API Key Authentication
+
+All API requests (except auth endpoints) require an API key via the `X-API-Key` header.
+
+### Key Types
+
+| Key | Prefix | Use Case | Security |
+|-------|--------|----------|----------|
+| Public Test | `pk_test_...` | Client-side, sandbox | Safe to expose |
+| Secret Test | `sk_test_...` | Server-side, sandbox | Keep private |
+| Public Live | `pk_live_...` | Client-side, production | Safe to expose |
+| Secret Live | `sk_live_...` | Server-side, production | **Keep extremely private** |
+
+### Usage
+
+```bash
+curl -H "X-API-Key: sk_test_abc123..." \
+     -H "X-Project-ID: proj_uuid..." \
+     https://api.orflow.io/v1/plans/list
+```
+
+<Warning>
+Never expose secret keys (`sk_...`) in client-side code, mobile apps, or public repositories.
+</Warning>
+
+## JWT Authentication (Dashboard)
+
+The dashboard uses JWT-based sessions for authentication.
+
+### Sign Up
+```bash
+POST /v1/auth/signup
+{
+  "name": "Your Name",
+  "email": "you@example.com",
+  "password": "secure_password"
+}
+```
+
+### Sign In
+```bash
+POST /v1/auth/signin
+{
+  "email": "you@example.com",
+  "password": "secure_password"
+}
+```
+
+**Response:**
+```json
+{
+  "tenant": { "id": "uuid", "name": "Your Name", "email": "you@example.com" },
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+### Using JWT Tokens
+
+Include the access token in the Authorization header:
+```bash
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+     https://api.orflow.io/v1/auth/me
+```
+
+### Refresh Tokens
+
+Access tokens expire in 30 minutes. Use the refresh token to get a new pair:
+
+```bash
+POST /v1/auth/refresh
+{
+  "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+### Logout
+```bash
+POST /v1/auth/logout
+```
+
+## Headers Summary
+
+| Header | Required For | Description |
+|--------|--------------|-------------|
+| `X-API-Key` | All API endpoints | Your secret API key (`sk_test_...` or `sk_live_...`) |
+| `X-Project-ID` | Project-scoped endpoints | Project UUID |
+| `Authorization: Bearer <token>` | Dashboard auth endpoints | JWT access token |
+| `X-Project-ID` | Optional | Project UUID (for tenant-level keys) |
+
+## Key Rotation
+
+Rotate keys regularly and immediately if exposed:
+
+1. **Regenerate** — Creates new key, invalidates old: `POST /v1/auth/keys/regenerate`
+2. **Revoke** — Disables without replacement: `POST /v1/auth/keys/revoke`
+
+<Note>
+Rotating a key immediately invalidates the old one. Update your environment variables and deploy before revoking.
+</Note>
