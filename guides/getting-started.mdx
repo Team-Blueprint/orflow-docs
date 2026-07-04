@@ -15,7 +15,7 @@ Welcome to Orflow! This guide will help you set up your first project, generate 
 
 Projects provide logical separation within your tenant.
 
-1. Log in to the [Orflow Dashboard](https://app.orflow.io).
+1. Log in to the [Orflow Dashboard]({{ DASHBOARD_URL }}).
 2. Create a new project (e.g., "Main Product").
 3. Note the Project UUID from the project settings.
 
@@ -37,9 +37,9 @@ Each tenant has four API key slots:
 Use your `sk_test` key and Project UUID to list customers:
 
 ```bash
-curl -H "X-API-Key: sk_test_your_secret_key" \
+    curl -H "X-API-Key: sk_test_your_secret_key" \
      -H "X-Project-ID: your_project_uuid" \
-     https://api.orflow.io/v1/customers/all
+     {{ API_BASE_URL }}/v1/customers/all
 ```
 
 If successful, you will receive a 200 OK response with an empty list `[]` (if you have no customers yet).

@@ -1,43 +1,60 @@
 ---
 title: "Sandbox vs Live Mode"
-description: "Understand how test and live API keys work in Orflow."
+description: "How test and live API keys route to different payment environments."
 icon: "flask"
 ---
 
-Orflow provides four API key slots that encode both **visibility** (publishable vs secret) and **environment** (test vs live).
+Orflow supports two environments: **Sandbox** for testing and **Live** for production. The environment is determined by which API key you use to authenticate.
 
-## Key Types
+## How It Works
 
-| Key | Prefix | Visibility | Environment | Use Case |
-|-----|--------|------------|-------------|----------|
-| Public Test | `pk_test_...` | Publishable | Sandbox | Client-side SDK, development |
-| Secret Test | `sk_test_...` | Secret | Sandbox | Server-side, development |
-| Public Live | `pk_live_...` | Publishable | Production | Client-side SDK, production |
-| Secret Live | `sk_live_...` | Secret | Production | Server-side, production |
+| Key Type | Environment | Payment Routing | Use Case |
+|----------|-------------|-----------------|----------|
+| `pk_test_...` / `sk_test_...` | Sandbox | Routes to sandbox Nomba URL | Development, testing, CI/CD |
+| `pk_live_...` / `sk_live_...` | Live | Routes to live Nomba URL | Production payments |
 
-## How Test vs Live Works
+When you make a request with a test key, Orflow automatically routes payment operations to the sandbox payment gateway. Live keys route to the production gateway.
 
-- **Authentication**: Both test and live keys authenticate identically. The middleware identifies which key type was used and stores it in request context.
-- **Data isolation**: Test and live keys access the **same data** in your tenant. They are not isolated databases — use separate projects for strict data separation.
-- **Payment provider**: Currently, the payment provider base URL is a deployment-level setting, not a per-request switch. Both test and live keys route to the same provider endpoint.
-- **Rate limiting**: Test and live keys share the same rate limit bucket per tenant.
+## Base URL
 
-## Key Enforcement
+Both environments use the same API base URL:
 
-Currently, Orflow enforces two levels of key access:
+```
+{{ API_BASE_URL }}
+```
 
-| Scope | Allowed Keys | Endpoints |
-|-------|-------------|-----------|
-| **Any key** | `pk_test`, `sk_test`, `pk_live`, `sk_live` | Read-only resource endpoints |
-| **Secret key only** | `sk_test`, `sk_live` | Reconciliation resolve, webhook endpoint management |
+The environment distinction happens at the payment provider level — not at the API endpoint level.
+
+## Authentication
+
+| Header | Required | Description |
+|--------|----------|-------------|
+| `X-API-Key` | Yes | Your API key (`sk_test_...` or `sk_live_...`) |
+
+The key prefix determines which payment environment to use.
+
+## Credentials
+
+Each environment requires its own set of Nomba credentials configured on the server:
+
+| Setting | Sandbox | Live |
+|---------|---------|------|
+| Base URL | `NOMBA_SANDBOX_BASE_URL` | `NOMBA_LIVE_BASE_URL` |
+| Client ID | `NOMBA_SANDBOX_CLIENT_ID` | `NOMBA_LIVE_CLIENT_ID` |
+| Client Secret | `NOMBA_SANDBOX_CLIENT_SECRET` | `NOMBA_LIVE_CLIENT_SECRET` |
+| Account ID | `NOMBA_SANDBOX_ACCOUNT_ID` | `NOMBA_LIVE_ACCOUNT_ID` |
+
+## Data Isolation
+
+Currently, sandbox and live keys operate on **shared data** within your tenant. Test and live transactions are tracked separately in the payment provider but appear together in Orflow.
 
 <Note>
-The test/live enforcement is structurally plumbed but semantically dormant. Future updates will fully isolate test and live environments, including separate payment provider routing and data scoping.
+Full data isolation between sandbox and live environments is planned for a future release.
 </Note>
 
 ## Best Practices
 
-- **Development**: Always use `sk_test` during development and testing.
-- **Production**: Switch to `sk_live` only when ready for live transactions.
-- **Key rotation**: Rotate keys regularly. Regenerate immediately if a key is exposed.
-- **Never expose secret keys** in client-side code, mobile apps, or public repositories.
+- **Development**: Always use `sk_test_...` during development and testing
+- **Production**: Switch to `sk_live_...` when ready for live transactions
+- **Key rotation**: Regenerate a key immediately if exposed
+- **Never expose secret keys** in client-side code, mobile apps, or public repositories

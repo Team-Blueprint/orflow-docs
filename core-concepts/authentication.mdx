@@ -24,7 +24,7 @@ All API requests (except auth endpoints) require an API key via the `X-API-Key` 
 ```bash
 curl -H "X-API-Key: sk_test_abc123..." \
      -H "X-Project-ID: proj_uuid..." \
-     https://api.orflow.io/v1/plans/list
+     {{ API_BASE_URL }}/v1/plans/list
 ```
 
 <Warning>
@@ -68,7 +68,7 @@ POST /v1/auth/signin
 Include the access token in the Authorization header:
 ```bash
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
-     https://api.orflow.io/v1/auth/me
+     {{ API_BASE_URL }}/v1/auth/me
 ```
 
 ### Refresh Tokens

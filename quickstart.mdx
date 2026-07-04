@@ -8,7 +8,7 @@ This guide will walk you through the essential steps to authenticate your reques
 ## Prerequisites
 
 Before getting started, make sure you have:
-- An account on [Orflow Dashboard](https://orflow.vercel.app)
+- An account on [Orflow Dashboard]({{ DASHBOARD_URL }})
 - A **Secret Key** (`sk_test_...`) from your Orflow Workspace Settings.
 - A HTTP client (like curl, Bruno, or Postman) or a backend server (Node.js, Python, Go, etc.) to run API requests.
 
@@ -36,7 +36,7 @@ Before getting started, make sure you have:
     Send a `POST` request to `/v1/plans/create` to create a plan with a major unit amount (e.g., `29.99` for $29.99):
 
     ```bash
-    curl -X POST https://api.orflow.io/v1/plans/create \
+    curl -X POST {{ API_BASE_URL }}/v1/plans/create \
       -H "Authorization: Bearer sk_test_your_secret_key" \
       -H "Content-Type: application/json" \
       -d '{
@@ -55,7 +55,7 @@ Before getting started, make sure you have:
     To onboard a subscriber, you can generate a hosted, secure, and ready-to-use checkout link. Send a `POST` request to `/v1/checkouts/create` referencing your `plan_id` and the customer's email address:
 
     ```bash
-    curl -X POST https://api.orflow.io/v1/checkouts/create \
+    curl -X POST {{ API_BASE_URL }}/v1/checkouts/create \
       -H "Authorization: Bearer sk_test_your_secret_key" \
       -H "Content-Type: application/json" \
       -d '{

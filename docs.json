@@ -8,9 +8,23 @@
     "dark": "#ea580c"
   },
   "favicon": "/favicon.svg",
-  "appearance": {
+    "appearance": {
     "default": "dark"
   },
+  "variables": [
+    {
+      "name": "API_BASE_URL",
+      "value": "https://orflow-backend.onrender.com"
+    },
+    {
+      "name": "DASHBOARD_URL",
+      "value": "https://orflow.vercel.app"
+    },
+    {
+      "name": "SITE_URL",
+      "value": "https://orflow.vercel.app"
+    }
+  ],
   "fonts": {
     "family": "Manrope"
   },
