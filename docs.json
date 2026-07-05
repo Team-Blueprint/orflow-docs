@@ -11,20 +11,11 @@
     "appearance": {
     "default": "dark"
   },
-  "variables": [
-    {
-      "name": "API_BASE_URL",
-      "value": "https://orflow-backend.onrender.com"
-    },
-    {
-      "name": "DASHBOARD_URL",
-      "value": "https://orflow.vercel.app"
-    },
-    {
-      "name": "SITE_URL",
-      "value": "https://orflow.vercel.app"
-    }
-  ],
+  "variables": {
+    "API_BASE_URL": "https://orflow-backend.onrender.com",
+    "DASHBOARD_URL": "https://orflow.vercel.app",
+    "SITE_URL": "https://orflow.vercel.app"
+  },
   "fonts": {
     "family": "Manrope"
   },
