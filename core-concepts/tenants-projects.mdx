@@ -40,6 +40,14 @@ A **Project** is a logical workspace within a tenant. Each project has isolated:
 - **Webhooks**: Outbound webhook endpoints and delivery logs
 - **API Keys**: The project inherits the tenant's API keys (scoped via `X-Project-ID` header)
 
+## Managing Projects
+
+Projects are created and managed in the **Orflow Dashboard** — there is no API for project CRUD. Use the dashboard to:
+
+- **Create** a project via the onboarding flow or the + New Project button
+- **Switch** between projects using the **Project Selector** in the sidebar
+- **View** your project ID and API keys in **Project Settings**
+
 ## API Key Scoping
 
 | Key Type | Scope | Use Case |
@@ -47,7 +55,7 @@ A **Project** is a logical workspace within a tenant. Each project has isolated:
 | `pk_test` / `sk_test` | Tenant-wide | Sandbox testing |
 | `pk_live` / `sk_live` | Tenant-wide | Production |
 
-All API requests require the `X-API-Key` header. Project-scoped endpoints additionally require `X-Project-ID`.
+All API requests require the `X-API-Key` header. Project-scoped endpoints (plans, customers, subscriptions, webhooks) additionally require `X-Project-ID` to scope the request to a specific project.
 
 ## When to Use Multiple Projects
 
@@ -55,7 +63,3 @@ All API requests require the `X-API-Key` header. Project-scoped endpoints additi
 - **Different teams** needing separate billing data
 - **Different environments** (staging vs production) — though Sandbox/Live handles this too
 - **Client work** — each client gets their own project
-
-## Switching Projects
-
-In the dashboard, use the **Project Selector** in the top-left sidebar to switch between projects. Via API, include the `X-Project-ID` header with the project's UUID.

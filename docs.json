@@ -67,17 +67,6 @@
             ]
           },
           {
-            "group": "Projects",
-            "pages": [
-              "api-reference/projects/index",
-              "api-reference/projects/create",
-              "api-reference/projects/list",
-              "api-reference/projects/get",
-              "api-reference/projects/update",
-              "api-reference/projects/delete"
-            ]
-          },
-          {
             "group": "Plans",
             "pages": [
               "api-reference/plans/index",
