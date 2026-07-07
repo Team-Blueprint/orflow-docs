@@ -1,14 +1,14 @@
 ---
 title: "Authentication"
-description: "How to authenticate with Orflow API using API keys and JWT tokens."
+description: "How to authenticate with Orflow API using API keys."
 icon: "key"
 ---
 
-Orflow provides two authentication methods: **API Keys** for server-to-server communication and **JWT tokens** for dashboard sessions.
+All API requests are authenticated via **API Keys**. Dashboard sessions (key management, Google OAuth login) are handled through Nomba's authentication layer and are not part of this API.
 
 ## API Key Authentication
 
-All API requests (except auth endpoints) require an API key via the `X-API-Key` header.
+All API requests require an API key via the `X-API-Key` header. The only exceptions are the public checkout endpoints (`/v1/subscription-pages/code/{code}` and `/v1/subscription-pages/code/{code}/checkout`) which are unauthenticated by design.
 
 ### Key Types
 
@@ -31,78 +31,20 @@ curl -H "X-API-Key: sk_test_abc123..." \
 Never expose secret keys (`sk_...`) in client-side code, mobile apps, or public repositories.
 </Warning>
 
-## JWT Authentication (Dashboard)
-
-The dashboard uses JWT-based sessions for authentication.
-
-### Sign Up
-```bash
-POST /v1/auth/signup
-{
-  "name": "Your Name",
-  "email": "you@example.com",
-  "password": "secure_password"
-}
-```
-
-### Sign In
-```bash
-POST /v1/auth/signin
-{
-  "email": "you@example.com",
-  "password": "secure_password"
-}
-```
-
-**Response:**
-```json
-{
-  "tenant": { "id": "uuid", "name": "Your Name", "email": "you@example.com" },
-  "access_token": "eyJhbGciOiJIUzI1NiIs...",
-  "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
-}
-```
-
-### Using JWT Tokens
-
-Include the access token in the Authorization header:
-```bash
-curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
-     {{ API_BASE_URL }}/v1/auth/me
-```
-
-### Refresh Tokens
-
-Access tokens expire in 30 minutes. Use the refresh token to get a new pair:
-
-```bash
-POST /v1/auth/refresh
-{
-  "refresh_token": "eyJhbGciOiJIUzI1NiIs..."
-}
-```
-
-### Logout
-```bash
-POST /v1/auth/logout
-```
-
 ## Headers Summary
 
 | Header | Required For | Description |
 |--------|--------------|-------------|
 | `X-API-Key` | All API endpoints | Your secret API key (`sk_test_...` or `sk_live_...`) |
-| `X-Project-ID` | Project-scoped endpoints | Project UUID |
-| `Authorization: Bearer <token>` | Dashboard auth endpoints | JWT access token |
-| `X-Project-ID` | Optional | Project UUID (for tenant-level keys) |
+| `X-Project-ID` | Project-scoped endpoints | Your project UUID |
 
-## Key Rotation
+## Key Management
 
-Rotate keys regularly and immediately if exposed:
+API keys are managed from the **Orflow Dashboard** — there is no API key endpoint accessible via API key.
 
-1. **Regenerate** — Creates new key, invalidates old: `POST /v1/auth/keys/regenerate`
-2. **Revoke** — Disables without replacement: `POST /v1/auth/keys/revoke`
+1. **Regenerate** — Creates a new key; the old one stops working immediately.
+2. **Revoke** — Disables a key slot without replacement.
 
 <Note>
-Rotating a key immediately invalidates the old one. Update your environment variables and deploy before revoking.
+Rotating a key immediately invalidates the old one. Update your environment variables and redeploy before revoking.
 </Note>

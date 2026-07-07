@@ -4,33 +4,40 @@ description: "Understand the current state of test and live API keys in Orflow."
 icon: "flask"
 ---
 
-Orflow provides four API key slots that encode **visibility** (publishable vs secret) and **environment** (test vs live). However, the test/live distinction is currently structural only — there is no separate sandbox environment or isolated data store.
+Orflow provides four API key slots that encode **visibility** (publishable vs secret) and **environment** (test vs live). Test (`sk_test`/`pk_test`) and live (`sk_live`/`pk_live`) keys share the same base URL and data store, but `is_test` metadata is propagated to isolate payment routing and webhook delivery.
 
 ## Current State
 
 | Aspect | Test Keys (`pk_test`/`sk_test`) | Live Keys (`pk_live`/`sk_live`) |
 |--------|-------------------------------|-------------------------------|
 | **Base URL** | Same (`{{ API_BASE_URL }}`) | Same (`{{ API_BASE_URL }}`) |
-| **Data isolation** | Shared | Shared |
-| **Authentication** | Works identically | Works identically |
-| **Payment provider** | Same endpoint | Same endpoint |
+| **Data isolation** | Shared database | Shared database |
+| **Payment provider** | Nomba test endpoint | Nomba production endpoint |
+| **Webhook delivery** | Only to test-mode endpoints | Only to live-mode endpoints |
+| **Subscriptions** | Marked `is_test: true` | Marked `is_test: false` |
 
-There is currently **no enforcement** distinguishing test from live behavior. All four key types authenticate against the same backend and access the same data.
+## What `is_test` Controls
 
-## What Is Enforced
+| Area | Behavior |
+|------|----------|
+| **Payment routing** | Charges made with test keys hit Nomba's test environment; live keys hit production. |
+| **Webhook endpoints** | Endpoints registered with a test key only receive test events, and vice versa. |
+| **Subscription pages** | Checkout pages created with test keys show "test mode" branding on the payment form. |
 
-| Scope | Allowed Keys | Endpoints |
-|-------|-------------|-----------|
-| **Any key** | All four slots | Read-only resource access |
-| **Secret key only** | `sk_test`, `sk_live` | Reconciliation resolve, webhook endpoint management |
+## Security Enforcement
+
+| Scope | Allowed Keys |
+|-------|-------------|
+| **Any key** | Read-only endpoints |
+| **Secret key only** (`sk_test`, `sk_live`) | Mutations (create plan, create subscription, reconcile, manage webhook endpoints) |
 
 ## Best Practices
 
-- **Development**: Use `sk_test` during development.
-- **Production**: Switch to `sk_live` when ready for production.
+- **Development**: Use `sk_test` during development — Nomba test cards work without real charges.
+- **Production**: Switch to `sk_live` when ready for live payments.
 - **Key rotation**: Regenerate a key immediately if it's exposed.
 - **Never expose secret keys** in client-side code, mobile apps, or public repositories.
 
 <Note>
-Full sandbox/live isolation (separate databases, payment provider routing, rate limits) is planned for a future release.
+Full sandbox/live isolation (separate databases, separate rate limits) is planned for a future release.
 </Note>

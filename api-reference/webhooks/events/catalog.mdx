@@ -11,12 +11,15 @@ Returns a list of all available webhook event types that the platform can emit.
 {
   "events": [
     {"type": "subscription.activated", "description": "Fired when a subscription becomes active."},
-    {"type": "subscription.paused", "description": "Fired when a subscription is paused."},
-    {"type": "subscription.canceled", "description": "Fired when a subscription is canceled."},
+    {"type": "subscription.paused", "description": "Fired when a subscription is paused (e.g. trial ended with no payment method)."},
     {"type": "subscription.trial_ending", "description": "Fired when a trial period ends."},
+    {"type": "subscription.past_due", "description": "Fired when a renewal charge fails. Dunning retries begin."},
+    {"type": "subscription.unpaid", "description": "Fired when all dunning retries are exhausted."},
+    {"type": "subscription.canceled", "description": "Fired when a subscription is canceled."},
+    {"type": "subscription.defaulted", "description": "Fired when an installment subscription defaults after grace period."},
+    {"type": "subscription.completed", "description": "Fired when the final installment of a subscription is paid."},
     {"type": "invoice.paid", "description": "Fired when an invoice is successfully paid."},
-    {"type": "invoice.payment_failed", "description": "Fired when an invoice payment fails."},
-    {"type": "payment_method.attached", "description": "Fired when a new payment method is attached."}
+    {"type": "invoice.payment_failed", "description": "Fired when an invoice payment fails."}
   ]
 }
 ```

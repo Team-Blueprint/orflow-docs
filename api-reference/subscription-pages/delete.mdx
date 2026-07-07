@@ -1,0 +1,23 @@
+---
+title: "Delete Subscription Page"
+openapi: "DELETE /v1/subscription-pages/{page_id}"
+---
+
+Permanently deletes a subscription page. The public URL will stop working immediately.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `page_id` | string (UUID) | The subscription page ID |
+
+**Response:**
+
+Returns `204 No Content` on success.
+
+**Required Headers:**
+
+| Header | Value |
+|--------|-------|
+| `X-API-Key` | `sk_test_...` or `sk_live_...` |
+| `X-Project-ID` | Your project UUID |

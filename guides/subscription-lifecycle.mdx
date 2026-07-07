@@ -23,22 +23,43 @@ POST /v1/subscriptions/create
 
 | State | Description |
 |-------|-------------|
-| `trialing` | The subscription is in a trial period. No charges occur. |
-| `active` | The subscription is active and will bill automatically. |
-| `past_due` | A payment failed. The dunning process begins. |
-| `paused` | The subscription is active but billing is stopped. |
-| `canceled` | The subscription is closed. No future billing. |
+| `incomplete` | Initial state. Awaiting first payment. |
+| `incomplete_expired` | First payment never arrived; timer expired. Terminal. |
+| `trialing` | Trial period active. No charges yet. |
+| `active` | Subscription is active and billing on schedule. |
+| `past_due` | A renewal charge failed. Dunning retries in progress. |
+| `unpaid` | All dunning retries exhausted. Subscription is now unpaid. |
+| `paused` | Billing manually stopped. Can be resumed. |
+| `canceled` | Subscription closed. No future billing. Terminal. |
+| `completed` | Final installment was paid. Terminal. |
+| `defaulted` | Subscription defaulted. Terminal. |
 
 ## 3. Transitions
 
-- **Trial End**: Transitions `trialing` -> `active` automatically.
-- **Payment Success**: Renews the subscription.
-- **Payment Failure**: Transitions `active` -> `past_due`.
-- **Manual Pause**: Transitions `active` -> `paused`.
-- **Manual Cancel**: Transitions any state -> `canceled`.
+| From | To | Trigger |
+|------|----|---------|
+| `incomplete` | `active` | First payment succeeded |
+| `incomplete` | `incomplete_expired` | First-invoice expiry timer fired unpaid |
+| `incomplete` | `canceled` | Abandoned before first payment |
+| `trialing` | `active` | Trial ended, payment method charged |
+| `trialing` | `paused` | Trial ended, no valid payment method |
+| `trialing` | `canceled` | Canceled during trial |
+| `active` | `past_due` | Renewal charge failed |
+| `active` | `paused` | Explicitly paused |
+| `active` | `completed` | Final installment invoice paid |
+| `active` | `canceled` | Canceled while active |
+| `past_due` | `active` | Dunning retry succeeded |
+| `past_due` | `unpaid` | All dunning retries exhausted |
+| `past_due` | `canceled` | Canceled while past due |
+| `unpaid` | `active` | Recovered via manual payment |
+| `unpaid` | `canceled` | Cancellation from unpaid |
+| `paused` | `active` | Resumed |
+| `paused` | `canceled` | Canceled while paused |
+
+Terminal states with no outgoing transitions: `incomplete_expired`, `canceled`, `completed`, `defaulted`.
 
 ## 4. Best Practices
 
-- **Listen for Webhooks**: Monitor `subscription.created`, `subscription.activated`, and `subscription.canceled` to update your internal user status.
-- **Handle Past Due**: Inform users when a payment fails so they can update their payment method.
+- **Listen for Webhooks**: Monitor `subscription.activated`, `invoice.payment_failed`, and `subscription.canceled` to update your internal user status.
+- **Handle Past Due**: Inform users when a payment fails so they can update their payment method. Orflow retries automatically (dunning).
 - **Use Trials**: Use trial periods to reduce friction for new users.

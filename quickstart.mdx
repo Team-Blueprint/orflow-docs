@@ -20,9 +20,9 @@ Before getting started, make sure you have:
   <Step title="Retrieve your Secret Key">
     Log in to the **Orflow Dashboard**, navigate to your workspace settings, and copy your Secret Key. 
     
-    All server-side requests must authenticate by sending this key in the Authorization header:
+    All server-side requests must authenticate by sending this key via the `X-API-Key` header:
     ```bash
-    Authorization: Bearer sk_test_...
+    X-API-Key: sk_test_your_secret_key
     ```
     
     <Warning>
@@ -37,7 +37,7 @@ Before getting started, make sure you have:
 
     ```bash
     curl -X POST {{ API_BASE_URL }}/v1/plans/create \
-      -H "Authorization: Bearer sk_test_your_secret_key" \
+      -H "X-API-Key: sk_test_your_secret_key" \
       -H "Content-Type: application/json" \
       -d '{
         "name": "Pro Plan",
@@ -51,26 +51,56 @@ Before getting started, make sure you have:
     The response returns a unique `id` for your plan (e.g., `plan_abc123`). Keep track of this ID for the next step.
   </Step>
 
-  <Step title="Generate a Checkout Link">
-    To onboard a subscriber, you can generate a hosted, secure, and ready-to-use checkout link. Send a `POST` request to `/v1/checkouts/create` referencing your `plan_id` and the customer's email address:
+  <Step title="Create a Subscription Page">
+    A subscription page is a shareable landing page that lets customers sign up and pay. Create one linked to your plan:
 
     ```bash
-    curl -X POST {{ API_BASE_URL }}/v1/checkouts/create \
-      -H "Authorization: Bearer sk_test_your_secret_key" \
+    curl -X POST {{ API_BASE_URL }}/v1/subscription-pages/create \
+      -H "X-API-Key: sk_test_your_secret_key" \
+      -H "X-Project-ID: your_project_uuid" \
       -H "Content-Type: application/json" \
       -d '{
-        "plan_id": "plan_abc123",
-        "customer_email": "customer@example.com"
+        "plan_id": "plan_abc123"
       }'
     ```
 
-    The response returns a checkout URL:
+    The response includes a unique `code` (e.g. `abc123xy`) that forms the public checkout URL:
+
     ```json
     {
-      "checkout_url": "https://checkout.orflow.io/pay/chk_xyz789"
+      "id": "page_uuid",
+      "code": "abc123xy",
+      "plan_id": "plan_abc123",
+      "is_active": true,
+      "is_test": true
     }
     ```
-    Simply redirect your user to this URL. Orflow and Nomba will handle card validation, security tokenization, and initial payment collection securely.
+
+    Share the URL `{{ SITE_URL }}/pay/abc123xy` with your customer. Orflow renders a branded payment page that collects the customer's name, email, and card details.
+  </Step>
+
+  <Step title="Customer Completes Checkout">
+    When the customer submits the payment form, your frontend calls the public checkout endpoint:
+
+    ```bash
+    curl -X POST {{ API_BASE_URL }}/v1/subscription-pages/code/abc123xy/checkout \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Jane Doe",
+        "email": "jane@example.com"
+      }'
+    ```
+
+    The response returns a Nomba checkout link for card payment:
+
+    ```json
+    {
+      "checkout_link": "https://nomba-checkout-url",
+      "order_reference": "ORD_xyz789"
+    }
+    ```
+
+    Redirect the customer to this link. Nomba handles card validation, tokenization, and payment collection. On success, Orflow creates the subscription and schedules recurring billing.
   </Step>
 
   <Step title="Listen for billing events via Webhooks">
@@ -78,9 +108,9 @@ Before getting started, make sure you have:
     
     Your server can listen for webhooks to instantly update your user's entitlement:
     
-    - `subscription.created`: Dispatched the moment checkout completes and a subscription becomes active.
-    - `subscription.charge.failed`: Dispatched if an auto-renewal fails (triggers standard retry logic).
-    - `subscription.cancelled`: Dispatched when a subscription is deactivated.
+    - `subscription.activated`: Dispatched when a subscription becomes active after first payment.
+    - `invoice.payment_failed`: Dispatched if an auto-renewal charge fails (triggers dunning retries).
+    - `subscription.canceled`: Dispatched when a subscription is deactivated.
   </Step>
 </Steps>
 

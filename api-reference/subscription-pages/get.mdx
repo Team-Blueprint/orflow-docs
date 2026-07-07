@@ -1,0 +1,38 @@
+---
+title: "Get Subscription Page"
+openapi: "GET /v1/subscription-pages/{page_id}"
+---
+
+Fetches a specific subscription page by ID.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `page_id` | string (UUID) | The subscription page ID |
+
+**Response:**
+
+```json
+{
+  "id": "6a0b4d5e-...",
+  "tenant_id": "7b1c5d6e-...",
+  "project_id": "8c2d6e7f-...",
+  "plan_id": "3f7c1a2b-...",
+  "code": "abc123xy",
+  "is_active": true,
+  "is_test": true,
+  "plan_name": "Pro Plan",
+  "project_name": "Main Product",
+  "url": "/subscribe/abc123xy",
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-01-15T10:30:00Z"
+}
+```
+
+**Required Headers:**
+
+| Header | Value |
+|--------|-------|
+| `X-API-Key` | `sk_test_...` or `sk_live_...` |
+| `X-Project-ID` | Your project UUID |

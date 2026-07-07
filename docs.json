@@ -101,6 +101,17 @@
             ]
           },
           {
+            "group": "Subscription Pages",
+            "pages": [
+              "api-reference/subscription-pages/index",
+              "api-reference/subscription-pages/create",
+              "api-reference/subscription-pages/list",
+              "api-reference/subscription-pages/get",
+              "api-reference/subscription-pages/update",
+              "api-reference/subscription-pages/delete"
+            ]
+          },
+          {
             "group": "Payment Methods",
             "pages": [
               "api-reference/payment-methods/index",

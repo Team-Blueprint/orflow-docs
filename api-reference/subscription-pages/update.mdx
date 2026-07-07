@@ -1,0 +1,52 @@
+---
+title: "Update Subscription Page"
+openapi: "PATCH /v1/subscription-pages/{page_id}/update"
+---
+
+Partially updates a subscription page. You can change the linked plan or deactivate the page.
+
+**Path Parameters:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `page_id` | string (UUID) | The subscription page ID |
+
+**Request Body:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `plan_id` | string (UUID) | no | Replace the linked plan |
+| `is_active` | boolean | no | Deactivate or reactivate the page |
+| `is_test` | boolean | no | Switch between test and live mode |
+
+**Example Request:**
+
+```json
+{
+  "plan_id": "4d8e2b3c-...",
+  "is_active": true
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "6a0b4d5e-...",
+  "tenant_id": "7b1c5d6e-...",
+  "project_id": "8c2d6e7f-...",
+  "plan_id": "4d8e2b3c-...",
+  "code": "abc123xy",
+  "is_active": true,
+  "is_test": true,
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-01-16T08:00:00Z"
+}
+```
+
+**Required Headers:**
+
+| Header | Value |
+|--------|-------|
+| `X-API-Key` | `sk_test_...` or `sk_live_...` |
+| `X-Project-ID` | Your project UUID |
