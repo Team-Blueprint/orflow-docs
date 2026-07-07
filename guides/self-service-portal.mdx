@@ -1,0 +1,110 @@
+---
+title: "Self-Service Portal"
+description: "Understand the post-purchase customer portal workflow — access credentials, subscription management, and payment updates."
+icon: "building-store"
+---
+
+After a customer completes their first successful payment, Orflow provisions a self-service billing portal linked to their subscription. This portal lets customers manage their account without contacting your support team.
+
+## Access Credentials
+
+On first successful payment, Orflow sends an automated transactional email to the customer. This email includes:
+
+- A unique portal access URL
+- A 6-digit temporary entry PIN
+
+The link follows this pattern:
+
+```
+{{ SITE_URL }}/portal/access/{portal_token_slug}
+```
+
+### Email Delivery
+
+The email is sent asynchronously via Brevo (Sendinblue) with the following characteristics:
+
+- **Format** — Light-mode HTML with inline styles, no images or tracking pixels
+- **From** — Orflow's default sender address
+- **Subject** — "Your portal access credentials"
+- **Redelivery** — Subsequent purchases by the same customer reuse existing credentials. No duplicate email is sent.
+
+## Portal Workflow
+
+The self-service portal is a client-side application hosted on the same domain as the checkout pages.
+
+### Authentication
+
+The portal authenticates customers using a two-step flow:
+
+1. **Access link** — The customer clicks the portal URL, which includes their `portal_token_slug`
+2. **PIN entry** — The customer enters their 6-digit temporary PIN
+3. **Session token** — On success, the system issues a short-lived JWT session token (configurable expiry) scoped to that customer and their active subscription
+
+### Dashboard
+
+After authentication, the customer sees their billing dashboard with the following sections:
+
+#### Plan Summary
+
+| Field | Description |
+|-------|-------------|
+| **Plan name** | The name of the subscribed plan |
+| **Price** | Amount and billing interval |
+| **Status badge** | Current subscription state (active, paused, past_due, etc.) |
+| **Next charge date** | Date of the upcoming scheduled payment |
+
+#### Payment Method
+
+Displays the last four digits and card brand of the saved payment instrument. The customer can:
+
+- **View** — See the masked card number and brand (e.g., "•••• •••• •••• 4242 Visa")
+- **Update** — Replace with a new card using a secure inline form
+
+#### Payment History
+
+A transaction table showing recent billing records:
+
+- Date of each charge
+- Amount and currency
+- Payment status (paid / failed)
+- Receipt reference
+
+When billing records are empty (e.g., during a trial period), the table shows an appropriate empty state message.
+
+### Subscription Actions
+
+Customers can modify their subscription from the portal based on the current state:
+
+| Action | Available When | Effect |
+|--------|---------------|--------|
+| **Pause** | `active`, `trialing`, `past_due`, `dunning` | Billing stops. Subscription enters `paused` state. Can be resumed later. |
+| **Resume** | `paused` | Billing restarts. Subscription returns to `active`. |
+| **Cancel** | `active`, `trialing`, `past_due`, `dunning` | Subscription enters `canceled` state. Access continues until end of current billing period. Irreversible. |
+| **Update card** | Any state with an active subscription | Replaces the saved payment method. Useful when payments fail or the card expires. |
+
+### Payment Method Updates
+
+When a customer updates their card:
+
+1. The new card token is submitted via the Nomba secure checkout wrapper
+2. Orflow creates a new payment method record and sets it as default
+3. The previous payment method is preserved but no longer used for future charges
+4. The customer's display metadata (last four digits, card brand) is updated immediately
+
+### Status Alerts
+
+The portal shows contextual banners for non-healthy states:
+
+- **Past due / dunning** — "Your last payment failed" with an inline button to update the payment method
+- **Suspended** — "Your subscription is suspended" with a **Reactivate subscription** button that opens the card update flow
+
+## Best Practices
+
+- **Communicate the portal** — Reference the self-service portal in your post-purchase confirmation pages or receipts so customers know they can self-serve.
+- **Monitor subscription events** — Webhook events (`subscription.activated`, `subscription.paused`, `subscription.canceled`) fire when customers take action in the portal. Use them to keep your internal systems in sync.
+- **PIN security** — The portal PIN is a time-limited credential. Customers can change it after first login via the **Update PIN** option.
+- **Test the flow** — Use `sk_test` keys to purchase a test subscription and walk through the portal end-to-end before going live.
+
+<Note>
+The portal session token expires after a configurable period (default: 60 minutes). The customer must re-authenticate with their access link and PIN after expiry.
+</Note>

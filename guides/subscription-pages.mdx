@@ -1,0 +1,128 @@
+---
+title: "Subscription Pages"
+description: "Create no-code checkout links and understand how they bind to customer billing portals."
+icon: "link"
+---
+
+Subscription Pages are shareable, hosted checkout links that let customers sign up for a plan and pay — without you building a payment form. Each page produces a short code and a public URL you can send to anyone.
+
+## How They Work
+
+<Steps>
+  <Step title="Create a Subscription Page">
+    Link a page to one of your plans via the API. The response includes a unique `code`:
+
+    ```bash
+    POST {{ API_BASE_URL }}/v1/subscription-pages/create
+    X-API-Key: sk_test_your_secret_key
+    X-Project-ID: your_project_uuid
+    Content-Type: application/json
+
+    {
+      "plan_id": "plan_abc123"
+    }
+    ```
+
+    ```json
+    {
+      "id": "page_uuid",
+      "code": "abc123xy",
+      "plan_id": "plan_abc123",
+      "is_active": true,
+      "is_test": true
+    }
+    ```
+  </Step>
+
+  <Step title="Share the checkout URL">
+    The public checkout URL is:
+
+    ```
+    {{ SITE_URL }}/pay/abc123xy
+    ```
+
+    Orflow renders a branded payment form that collects the customer's name, email, and card details. No frontend code needed.
+  </Step>
+
+  <Step title="Customer completes checkout">
+    When the customer submits the form, your server calls the public checkout endpoint:
+
+    ```bash
+    POST {{ API_BASE_URL }}/v1/subscription-pages/code/abc123xy/checkout
+    Content-Type: application/json
+
+    {
+      "name": "Jane Doe",
+      "email": "jane@example.com"
+    }
+    ```
+
+    The response returns a Nomba checkout link for card payment:
+
+    ```json
+    {
+      "checkout_link": "https://nomba-checkout-url",
+      "order_reference": "ORD_xyz789"
+    }
+    ```
+
+    Redirect the customer to this link. Nomba handles card validation, tokenization, and payment collection.
+  </Step>
+
+  <Step title="Portal credentials are generated">
+    On first successful payment, Orflow automatically:
+    - Generates a unique, unguessable `portal_token_slug` for the customer
+    - Creates a hashed `portal_pin_hash` (the raw PIN is sent to the customer via email)
+    - Dispatches a transactional email containing a self-service portal access link and a temporary entry PIN
+
+    These credentials are bound to the customer profile. Each subsequent subscription page checkout for the same customer reuses the existing credentials — no duplicate emails.
+  </Step>
+</Steps>
+
+## Data Flow
+
+After a successful checkout event, the system performs the following steps automatically:
+
+1. **Payment verification** — Nomba sends a `charge.success` webhook to Orflow
+2. **Subscription activation** — The subscription transitions from `incomplete` to `active`
+3. **Card tokenization** — The payment provider token is saved as a payment method and linked to the subscription
+4. **Portal credential binding** — If the customer has no existing `portal_token_slug`, one is generated alongside a random 6-digit PIN
+5. **Email dispatch** — A transactional light-mode email is sent (via Brevo) with the portal link and cleartext PIN
+
+## Querying Portal Credentials
+
+You can retrieve a customer's `portal_token_slug` via the Core API to build custom billing management links in your own platform:
+
+```bash
+GET {{ API_BASE_URL }}/v1/customers/{customer_id}
+X-API-Key: sk_live_your_secret_key
+```
+
+```json
+{
+  "id": "cust_uuid",
+  "email": "jane@example.com",
+  "name": "Jane Doe",
+  "portal_token_slug": "a1b2c3d4e5f6...",
+  "card_last4": "4242",
+  "card_brand": "Visa",
+  ...
+}
+```
+
+The `portal_token_slug` is a 64-character random URL-safe string. Construct the portal URL as:
+
+```
+{{ SITE_URL }}/portal/access/{portal_token_slug}
+```
+
+## Best Practices
+
+- **One page per plan** — Create separate Subscription Pages for different plans. Customers land directly on the right pricing option.
+- **Test before going live** — Use `sk_test` keys to create pages in test mode. The checkout form shows "test mode" branding to avoid confusion.
+- **Handle the checkout response** — Your frontend should redirect customers to the Nomba checkout link immediately after the API call returns.
+- **Listen for webhooks** — Monitor `subscription.activated` and `charge.success` events to update your internal user entitlement right away.
+
+<Note>
+A customer's `portal_token_slug` and PIN are generated once per customer profile. If the same email address is used for multiple purchases, the credentials from the first purchase remain valid.
+</Note>
