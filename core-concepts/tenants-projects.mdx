@@ -15,6 +15,7 @@ Tenant (Organization)
     ├── Customers
     ├── Subscriptions
     ├── Payment Methods
+    ├── Subscription Pages
     └── Webhooks
 └── Project B
     └── ...
@@ -37,16 +38,19 @@ A **Project** is a logical workspace within a tenant. Each project has isolated:
 - **Customers**: Customer records and their data
 - **Subscriptions**: Active and historical subscriptions
 - **Payment Methods**: Tokenized payment instruments
+- **Subscription Pages**: Shareable checkout links linked to plans
 - **Webhooks**: Outbound webhook endpoints and delivery logs
-- **API Keys**: The project inherits the tenant's API keys (scoped via `X-Project-ID` header)
+- **Default Callback URL**: Fallback redirect for API subscriptions when no `callback_url` is provided
+- **Environment**: Sandbox/live mode (stored per project, not per account)
 
 ## Managing Projects
 
 Projects are created and managed in the **Orflow Dashboard** — there is no API for project CRUD. Use the dashboard to:
 
-- **Create** a project via the onboarding flow or the + New Project button
+- **Create** a project via the onboarding flow or the **+ New Project** button
 - **Switch** between projects using the **Project Selector** in the sidebar
 - **View** your project ID and API keys in **Project Settings**
+- **Configure** the default callback URL and environment in **Project Settings**
 
 ## API Key Scoping
 
@@ -56,6 +60,22 @@ Projects are created and managed in the **Orflow Dashboard** — there is no API
 | `pk_live` / `sk_live` | Tenant-wide | Production |
 
 All API requests require the `X-API-Key` header. Project-scoped endpoints (plans, customers, subscriptions, webhooks) additionally require `X-Project-ID` to scope the request to a specific project.
+
+<Note>
+`POST /v1/subscriptions/create` does not require `X-Project-ID` — the project is resolved from the plan or customer automatically.
+</Note>
+
+## Environment Per Project
+
+Each project has its own sandbox/live environment state. The environment toggle is located in **Project Settings** and is stored locally per project. This means:
+
+- Project A can be in test mode while Project B is in live mode
+- Switching projects automatically loads the correct environment
+- API calls include the `X-Test-Mode` header automatically based on the active project's environment
+
+## Default Callback URL
+
+Each project can have a `default_callback_url` set in **Project Settings**. When creating subscriptions via `POST /subscriptions/create`, if no `callback_url` is provided in the request, the project's default is used as a fallback. Subscription pages always redirect to the Orflow portal regardless of this setting.
 
 ## When to Use Multiple Projects
 

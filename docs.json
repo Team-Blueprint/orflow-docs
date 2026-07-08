@@ -97,7 +97,8 @@
               "api-reference/subscriptions/pause",
               "api-reference/subscriptions/resume",
               "api-reference/subscriptions/change-plan",
-              "api-reference/subscriptions/audit-log"
+              "api-reference/subscriptions/audit-log",
+              "api-reference/subscriptions/verify-checkout"
             ]
           },
           {

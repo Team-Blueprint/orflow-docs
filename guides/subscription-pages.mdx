@@ -28,24 +28,27 @@ Subscription Pages are shareable, hosted checkout links that let customers sign 
       "id": "page_uuid",
       "code": "abc123xy",
       "plan_id": "plan_abc123",
+      "project_name": "My App",
       "is_active": true,
       "is_test": true
     }
     ```
+
+    The page is linked to the active project and inherits its name, which is displayed as the business name on the checkout form.
   </Step>
 
   <Step title="Share the checkout URL">
     The public checkout URL is:
 
     ```
-    {{ SITE_URL }}/pay/abc123xy
+    {{ SITE_URL }}/subscribe/abc123xy
     ```
 
-    Orflow renders a branded payment form that collects the customer's name, email, and card details. No frontend code needed.
+    Orflow renders a branded payment form that shows the project's business name, plan details, and collects the customer's name and email. No frontend code needed.
   </Step>
 
   <Step title="Customer completes checkout">
-    When the customer submits the form, your server calls the public checkout endpoint:
+    When the customer submits the form, the frontend calls the public checkout endpoint:
 
     ```bash
     POST {{ API_BASE_URL }}/v1/subscription-pages/code/abc123xy/checkout
@@ -61,12 +64,12 @@ Subscription Pages are shareable, hosted checkout links that let customers sign 
 
     ```json
     {
-      "checkout_link": "https://nomba-checkout-url",
+      "checkout_link": "https://checkout.nomba.com/pay/...",
       "order_reference": "ORD_xyz789"
     }
     ```
 
-    Redirect the customer to this link. Nomba handles card validation, tokenization, and payment collection.
+    The customer is redirected to the Nomba-hosted checkout page. Nomba handles card validation, 3DS, and payment collection.
   </Step>
 
   <Step title="Portal credentials are generated">
@@ -77,13 +80,32 @@ Subscription Pages are shareable, hosted checkout links that let customers sign 
 
     These credentials are bound to the customer profile. Each subsequent subscription page checkout for the same customer reuses the existing credentials — no duplicate emails.
   </Step>
+
+  <Step title="Callback redirect">
+    After payment, Nomba redirects the customer to:
+
+    ```
+    {{ SITE_URL }}/portal/callback?orderId=xxx&orderReference=ORD_xyz789
+    ```
+
+    The callback page verifies the payment with Orflow's backend, then automatically forwards the customer to their portal access page (`/portal/access/{slug}`) where they can enter their PIN and manage their subscription.
+  </Step>
 </Steps>
+
+## Key Differences from API Integration
+
+| Aspect | Subscription Page | API Integration |
+|--------|------------------|-----------------|
+| Setup | No backend code needed | Integrate via `POST /subscriptions/create` |
+| Customer creation | Auto-collected from form | Pass `email` + `name` or `customer_id` |
+| Callback | Always goes to Orflow portal | Merchant provides `callback_url` |
+| Use case | Non-technical merchants, quick launch | Custom checkout flow in existing app |
 
 ## Data Flow
 
 After a successful checkout event, the system performs the following steps automatically:
 
-1. **Payment verification** — Nomba sends a `charge.success` webhook to Orflow
+1. **Payment verification** — Nomba sends a `payment_success` webhook to Orflow
 2. **Subscription activation** — The subscription transitions from `incomplete` to `active`
 3. **Card tokenization** — The payment provider token is saved as a payment method and linked to the subscription
 4. **Portal credential binding** — If the customer has no existing `portal_token_slug`, one is generated alongside a random 6-digit PIN
@@ -121,7 +143,7 @@ The `portal_token_slug` is a 64-character random URL-safe string. Construct the 
 - **One page per plan** — Create separate Subscription Pages for different plans. Customers land directly on the right pricing option.
 - **Test before going live** — Use `sk_test` keys to create pages in test mode. The checkout form shows "test mode" branding to avoid confusion.
 - **Handle the checkout response** — Your frontend should redirect customers to the Nomba checkout link immediately after the API call returns.
-- **Listen for webhooks** — Monitor `subscription.activated` and `charge.success` events to update your internal user entitlement right away.
+- **Listen for webhooks** — Monitor `subscription.activated` and `payment_success` events to update your internal user entitlement right away.
 
 <Note>
 A customer's `portal_token_slug` and PIN are generated once per customer profile. If the same email address is used for multiple purchases, the credentials from the first purchase remain valid.

@@ -1,0 +1,34 @@
+---
+title: "Verify Checkout"
+openapi: "GET /v1/subscriptions/verify-checkout"
+---
+
+Verify a checkout transaction after Nomba redirects the customer to your callback URL.
+
+Use this endpoint to resolve the payment status server-side after Nomba redirects the customer back to your `callback_url`. The `orderReference` is appended as a query parameter on the redirect.
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `order_reference` | string | yes | The `orderReference` returned from `POST /subscriptions/create` |
+
+**Response:**
+
+```json
+{
+  "status": "success",
+  "subscription_id": "6a0b4d5e-...",
+  "metadata": {
+    "external_id": "user_abc_123"
+  }
+}
+```
+
+**Status values:** `success`, `failed`, `pending`
+
+No authentication required — the `orderReference` is a random UUID that acts as a bearer token.
+
+**Required Headers:**
+
+None. This endpoint is unauthenticated.

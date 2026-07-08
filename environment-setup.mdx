@@ -40,7 +40,17 @@ curl -H "X-API-Key: sk_test_..." \
 | Header | Required | Description |
 |--------|----------|-------------|
 | `X-API-Key` | Yes | Your API key (`sk_test_...` or `sk_live_...`) |
-| `X-Project-ID` | For project-scoped endpoints | Your project UUID |
+| `X-Project-ID` | For most project-scoped endpoints | Your project UUID |
+
+<Note>
+`POST /v1/subscriptions/create` does **not** require `X-Project-ID`. If `customer_id` is omitted, the project is resolved from the plan. If `customer_id` is provided, the customer's existing project is used.
+</Note>
+
+## Environment Per Project
+
+The Orflow Dashboard stores the sandbox/live environment toggle per project. Each project maintains its own environment state in localStorage (`orflow_env_{projectId}`). Switching between projects automatically loads the correct environment setting.
+
+You can change the environment in **Project Settings** → **Environment** toggle.
 
 ## Environment Variables
 

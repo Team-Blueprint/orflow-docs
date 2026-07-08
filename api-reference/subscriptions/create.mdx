@@ -9,53 +9,44 @@ Create a new subscription linking a customer to a plan.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `customer_id` | string (UUID) | yes | The customer to subscribe |
+| `customer_id` | string (UUID) | no | Existing customer. If omitted, `email` and `name` are used to auto-create or look up a customer |
+| `email` | string | no | Customer email — used to look up or create a customer when `customer_id` is omitted |
+| `name` | string | no | Customer name — used when auto-creating a customer |
 | `plan_id` | string (UUID) | yes | The plan to subscribe to |
 | `payment_method_id` | string (UUID) | no | Default payment method for recurring charges |
+| `callback_url` | string | no | URL to redirect after Nomba checkout. Falls back to project's `default_callback_url`, or returns an error if neither is set |
+| `metadata` | object | no | Arbitrary JSON (max 2 levels deep). Stored on the subscription and returned in webhooks + verify-checkout |
 | `trial` | boolean | no | If `true`, applies the plan's trial period. Default: `false` |
 
 **Behavior:**
+- If `customer_id` is provided, that customer is used directly. If omitted, Orflow looks up a customer by `email` within the plan's project, or auto-creates one with `{ email, name }`.
 - If `trial: true` and the plan has `trial_period_days`, the subscription starts in `trialing` state.
 - If no trial, a checkout session is initiated for the first payment. The response includes `checkout_link` and `order_reference`.
+- `callback_url` is resolved with this priority: request `callback_url` > project `default_callback_url` > error. Subscription page checkouts always use the global Orflow callback.
 
-**Example Request:**
+**Example Request (auto-create customer):**
 
 ```json
 {
-  "customer_id": "3f7c1a2b-...",
+  "email": "jane@example.com",
+  "name": "Jane Doe",
   "plan_id": "4d8e2b3c-...",
-  "payment_method_id": "5e9f3c4d-...",
-  "trial": true
+  "callback_url": "https://myapp.com/payment/success",
+  "metadata": {
+    "external_id": "user_abc_123"
+  }
 }
 ```
 
-**Response (with trial):**
+**Response (checkout initiated):**
 
 ```json
 {
   "subscription": {
     "id": "6a0b4d5e-...",
-    "customer_id": "3f7c1a2b-...",
-    "plan_id": "4d8e2b3c-...",
-    "status": "trialing",
-    "current_period_start": "2024-01-15T10:30:00Z",
-    "current_period_end": "2024-01-29T10:30:00Z",
-    "trial_end": "2024-01-29T10:30:00Z"
+    "status": "incomplete"
   },
-  "checkout_link": null,
-  "order_reference": null
-}
-```
-
-**Response (instant charge):**
-
-```json
-{
-  "subscription": {
-    "id": "6a0b4d5e-...",
-    "status": "active"
-  },
-  "checkout_link": "https://pay.orflow.io/abc123",
+  "checkout_link": "https://checkout.nomba.com/sandbox/...",
   "order_reference": "ORD_xyz789"
 }
 ```
