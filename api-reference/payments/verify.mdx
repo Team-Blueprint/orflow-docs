@@ -5,6 +5,14 @@ openapi: "GET /v1/payments/{reference}/verify"
 
 Verify payment status by calling the payment provider's verify transaction API.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/payments/<reference>/verify \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

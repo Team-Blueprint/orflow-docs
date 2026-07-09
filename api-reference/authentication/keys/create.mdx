@@ -5,6 +5,18 @@ openapi: "POST /v1/auth/keys/create"
 
 Create a key for a slot that has never been issued. Returns `409` if the slot already has a key.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/auth/keys/create \
+  -H "Authorization: Bearer <dashboard_jwt_token>" \
+  -H "X-CSRF-Token: <csrf_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Auth:** Requires JWT + CSRF token header.
 
 **Request Body:**

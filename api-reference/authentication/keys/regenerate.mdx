@@ -5,6 +5,18 @@ openapi: "POST /v1/auth/keys/regenerate"
 
 Replace an existing API key. The old key stops working immediately. No grace period.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/auth/keys/regenerate \
+  -H "Authorization: Bearer <dashboard_jwt_token>" \
+  -H "X-CSRF-Token: <csrf_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Auth:** Requires JWT + CSRF token header.
 
 **Request Body:**

@@ -5,6 +5,14 @@ openapi: "DELETE /v1/payment-methods/{payment_method_id}/del"
 
 Permanently delete a payment method. If it was the default, the next most recent method becomes default.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X DELETE {{API_BASE_URL}}/v1/payment-methods/<payment_method_id>/del \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

@@ -5,6 +5,14 @@ openapi: "GET /v1/payment-methods/customer/{customer_id}"
 
 List all payment methods for a customer.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/payment-methods/customer/<customer_id> \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

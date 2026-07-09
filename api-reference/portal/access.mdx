@@ -1,0 +1,31 @@
+---
+title: "Look Up Portal Access"
+sidebarTitle: "Look Up Access"
+api: "GET /v1/portal/access/{token_slug}"
+---
+
+Public endpoint that returns the customer's name for a given portal token slug. Used by the portal frontend to identify the customer before PIN entry.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl {{API_BASE_URL}}/v1/portal/access/{token_slug}
+```
+</CodeGroup>
+
+### Path Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `token_slug` | `string` | The customer's unique portal token slug |
+
+## Response
+
+Returns the customer's name.
+
+```json
+{
+  "name": "Jane Doe"
+}
+```

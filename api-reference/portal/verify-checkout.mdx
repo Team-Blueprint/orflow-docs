@@ -1,0 +1,41 @@
+---
+title: "Verify Checkout"
+sidebarTitle: "Verify Checkout"
+api: "GET /v1/portal/verify-checkout"
+---
+
+Called by the portal frontend after Nomba redirects the customer back to the callback URL. Verifies the transaction with Nomba and, if successful, marks the invoice as paid and activates the subscription. Serves as a safety net when the webhook hasn't arrived yet.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl "{{API_BASE_URL}}/v1/portal/verify-checkout?orderReference=3fa85f64-5717-4562-b3fc-2c963f66afa6"
+```
+</CodeGroup>
+
+### Query Parameters
+
+| Name | Type | Description |
+|------|------|-------------|
+| `orderReference` | `string` (UUID) | The invoice ID used as the order reference |
+
+## Response
+
+```json
+{
+  "success": true,
+  "status": "paid",
+  "subscription_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "portal_token_slug": "abc123",
+  "customer_name": "Jane Doe"
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `success` | Whether the payment was verified |
+| `status` | `paid`, `open`, or `failed` |
+| `subscription_id` | The subscription UUID |
+| `portal_token_slug` | The customer's portal slug (for redirecting to the portal) |
+| `customer_name` | The customer's name (for display) |

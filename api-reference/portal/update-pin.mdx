@@ -1,0 +1,32 @@
+---
+title: "Update Portal PIN"
+sidebarTitle: "Update PIN"
+api: "POST /v1/portal/update-pin"
+---
+
+Validates the current PIN then replaces it with a new one. Requires a valid portal session token.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/update-pin \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <portal_session_token>" \
+  -d '{
+    "current_pin": "482916",
+    "new_pin": "731054"
+  }'
+```
+</CodeGroup>
+
+### Body
+
+| Name | Type | Description |
+|------|------|-------------|
+| `current_pin` | `string` | The current 6-digit PIN |
+| `new_pin` | `string` | The new 6-digit PIN |
+
+## Response
+
+Returns `204 No Content` on success.

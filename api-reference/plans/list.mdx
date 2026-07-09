@@ -5,6 +5,14 @@ openapi: "GET /v1/plans/list"
 
 Retrieve all plans for a project.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/plans/list \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Query Parameters:**
 
 | Field | Type | Description |

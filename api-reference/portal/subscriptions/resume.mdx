@@ -1,0 +1,26 @@
+---
+title: "Resume Subscription"
+sidebarTitle: "Resume"
+api: "POST /v1/portal/subscriptions/resume"
+---
+
+Resumes billing for a paused subscription. The subscription returns to the `active` state.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/subscriptions/resume \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+Returns `204 No Content` on success.

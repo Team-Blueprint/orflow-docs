@@ -5,6 +5,14 @@ openapi: "GET /v1/subscriptions/{subscription_id}/audit-log"
 
 Returns the full history of state transitions for a subscription, newest first.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/subscriptions/<subscription_id>/audit-log \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

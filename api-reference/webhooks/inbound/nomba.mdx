@@ -5,6 +5,14 @@ openapi: "POST /v1/webhooks/inbound/nomba"
 
 Receive payment events from Nomba. Orflow verifies the HMAC-SHA256 signature before processing.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/webhooks/inbound/nomba \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Headers:**
 
 | Header | Required | Description |

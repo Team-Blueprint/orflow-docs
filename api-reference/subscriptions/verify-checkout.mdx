@@ -7,6 +7,14 @@ Verify a checkout transaction after Nomba redirects the customer to your callbac
 
 Use this endpoint to resolve the payment status server-side after Nomba redirects the customer back to your `callback_url`. The `orderReference` is appended as a query parameter on the redirect.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/subscriptions/verify-checkout \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Query Parameters:**
 
 | Parameter | Type | Required | Description |

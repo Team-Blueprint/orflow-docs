@@ -5,6 +5,18 @@ openapi: "POST /v1/customers/create"
 
 Register a new customer.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/customers/create \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Request Body:**
 
 | Field | Type | Required | Description |

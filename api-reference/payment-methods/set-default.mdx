@@ -5,6 +5,18 @@ openapi: "POST /v1/payment-methods/{payment_method_id}/set-default"
 
 Mark a payment method as the default for its customer.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/payment-methods/<payment_method_id>/set-default \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

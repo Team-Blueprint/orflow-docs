@@ -5,6 +5,14 @@ openapi: "GET /v1/subscription-pages/{page_id}"
 
 Fetches a specific subscription page by ID.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/subscription-pages/<page_id> \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

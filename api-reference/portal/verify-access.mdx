@@ -1,0 +1,37 @@
+---
+title: "Verify Portal Access"
+sidebarTitle: "Verify Access"
+api: "POST /v1/portal/verify-access"
+---
+
+Authenticates a customer by their portal token slug and PIN. Returns a short-lived portal session token (JWT) scoped to that customer and their active subscription.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/verify-access \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token_slug": "abc123",
+    "pin": "482916"
+  }'
+```
+</CodeGroup>
+
+### Body
+
+| Name | Type | Description |
+|------|------|-------------|
+| `token_slug` | `string` | The customer's portal token slug from the access URL |
+| `pin` | `string` | The 6-digit temporary PIN |
+
+## Response
+
+```json
+{
+  "portal_session_token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+Use this token as the `Authorization: Bearer` header for all authenticated portal endpoints.

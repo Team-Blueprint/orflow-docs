@@ -1,5 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
+  "openapi": "openapi.json",
   "theme": "palm",
   "name": "Orflow",
   "colors": {
@@ -122,6 +123,28 @@
               "api-reference/payment-methods/update",
               "api-reference/payment-methods/set-default",
               "api-reference/payment-methods/delete"
+            ]
+          },
+          {
+            "group": "Portal",
+            "pages": [
+              "api-reference/portal/index",
+              "api-reference/portal/access",
+              "api-reference/portal/verify-access",
+              "api-reference/portal/update-pin",
+              {
+                "group": "Subscriptions",
+                "pages": [
+                  "api-reference/portal/subscriptions/me",
+                  "api-reference/portal/subscriptions/payments",
+                  "api-reference/portal/subscriptions/create-update-card-checkout",
+                  "api-reference/portal/subscriptions/confirm-update-card",
+                  "api-reference/portal/subscriptions/cancel",
+                  "api-reference/portal/subscriptions/pause",
+                  "api-reference/portal/subscriptions/resume"
+                ]
+              },
+              "api-reference/portal/verify-checkout"
             ]
           },
           {

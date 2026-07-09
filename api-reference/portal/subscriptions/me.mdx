@@ -1,0 +1,37 @@
+---
+title: "Get My Subscription"
+sidebarTitle: "Get Subscription"
+api: "GET /v1/portal/subscriptions/me"
+---
+
+Returns the subscription linked to the current portal session, including plan details, status, next charge date, and the saved card's last four digits and brand.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl {{API_BASE_URL}}/v1/portal/subscriptions/me \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+```json
+{
+  "subscription_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "plan_name": "Pro Monthly",
+  "status": "active",
+  "amount": 500000,
+  "currency": "NGN",
+  "next_charge_date": "2026-08-09T00:00:00Z",
+  "card_last4": "4242",
+  "card_brand": "Visa"
+}
+```

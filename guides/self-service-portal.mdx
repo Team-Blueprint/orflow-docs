@@ -86,10 +86,13 @@ Customers can modify their subscription from the portal based on the current sta
 
 When a customer updates their card:
 
-1. The new card token is submitted via the Nomba secure checkout wrapper
-2. Orflow creates a new payment method record and sets it as default
-3. The previous payment method is preserved but no longer used for future charges
-4. The customer's display metadata (last four digits, card brand) is updated immediately
+1. The portal calls `POST /v1/portal/subscriptions/create-update-card-checkout`
+2. Orflow creates a $0 Nomba hosted checkout with `tokenizeCard=true` and returns a `checkout_link`
+3. The customer is redirected to Nomba's hosted checkout page to tokenize their new card
+4. After tokenization, Nomba redirects back to the portal callback URL
+5. The portal calls `POST /v1/portal/subscriptions/confirm-update-card` with the `order_reference`
+6. Orflow extracts the tokenized card data, creates a new payment method, and sets it as default
+7. The customer's display metadata (last four digits, card brand) is updated immediately
 
 ### Status Alerts
 

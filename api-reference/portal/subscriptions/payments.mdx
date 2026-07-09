@@ -1,0 +1,41 @@
+---
+title: "Get Payment History"
+sidebarTitle: "Payment History"
+api: "GET /v1/portal/subscriptions/me/payments"
+---
+
+Returns a ledger of payment attempts for the portal session's subscription, ordered by most recent first.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl {{API_BASE_URL}}/v1/portal/subscriptions/me/payments \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+```json
+[
+  {
+    "date": "2026-07-09T12:00:00Z",
+    "amount": 500000,
+    "currency": "NGN",
+    "status": "paid"
+  },
+  {
+    "date": "2026-06-09T12:00:00Z",
+    "amount": 500000,
+    "currency": "NGN",
+    "status": "paid"
+  }
+]
+```

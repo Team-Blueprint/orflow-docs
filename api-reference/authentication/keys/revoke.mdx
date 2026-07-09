@@ -5,6 +5,18 @@ openapi: "POST /v1/auth/keys/revoke"
 
 Soft-revoke one API key slot. The key value is retained but its active flag is set to `false`. Use regenerate to get a working key again.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/auth/keys/revoke \
+  -H "Authorization: Bearer <dashboard_jwt_token>" \
+  -H "X-CSRF-Token: <csrf_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Auth:** Requires JWT + CSRF token header.
 
 **Request Body:**

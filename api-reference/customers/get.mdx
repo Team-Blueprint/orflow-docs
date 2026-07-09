@@ -5,6 +5,14 @@ openapi: "GET /v1/customers/{customer_id}"
 
 Retrieve a single customer by UUID.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/customers/<customer_id> \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

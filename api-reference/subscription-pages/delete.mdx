@@ -5,6 +5,14 @@ openapi: "DELETE /v1/subscription-pages/{page_id}"
 
 Permanently deletes a subscription page. The public URL will stop working immediately.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X DELETE {{API_BASE_URL}}/v1/subscription-pages/<page_id> \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

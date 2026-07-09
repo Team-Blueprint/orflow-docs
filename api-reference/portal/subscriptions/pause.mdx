@@ -1,0 +1,28 @@
+---
+title: "Pause Subscription"
+sidebarTitle: "Pause"
+api: "POST /v1/portal/subscriptions/pause"
+---
+
+Pauses billing for the subscription linked to the current portal session. The subscription enters the `paused` state and can be resumed later.
+
+Available when the subscription is `active`, `trialing`, `past_due`, or `dunning`.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/subscriptions/pause \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+Returns `204 No Content` on success.

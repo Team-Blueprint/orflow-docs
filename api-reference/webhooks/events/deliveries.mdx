@@ -5,6 +5,14 @@ openapi: "GET /v1/webhooks/events/{event_id}/deliveries"
 
 List delivery attempts for a specific event, including status codes and response bodies.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/webhooks/events/<event_id>/deliveries \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

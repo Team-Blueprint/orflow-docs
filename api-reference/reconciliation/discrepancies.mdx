@@ -5,6 +5,14 @@ openapi: "GET /v1/reconciliation/discrepancies"
 
 Returns paginated reconciliation discrepancies. Tenants see only their own; platform API keys see all.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/reconciliation/discrepancies \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Query Parameters:**
 
 | Field | Type | Description |

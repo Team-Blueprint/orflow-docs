@@ -1,0 +1,26 @@
+---
+title: "Cancel Subscription"
+sidebarTitle: "Cancel"
+api: "POST /v1/portal/subscriptions/cancel"
+---
+
+Cancels the subscription linked to the current portal session. Access continues until the end of the current billing period. This action is irreversible.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/subscriptions/cancel \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+Returns `204 No Content` on success.

@@ -5,6 +5,14 @@ openapi: "GET /v1/webhooks/events/catalog"
 
 Returns a list of all available webhook event types that the platform can emit.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/webhooks/events/catalog \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Response:**
 
 ```json

@@ -5,6 +5,14 @@ openapi: "POST /v1/subscriptions/{subscription_id}/cancel"
 
 Immediately cancel a subscription. Stops all future billing.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/subscriptions/<subscription_id>/cancel \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

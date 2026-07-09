@@ -5,6 +5,14 @@ openapi: "GET /v1/webhooks/endpoints/all"
 
 List all registered webhook endpoints for this tenant.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/webhooks/endpoints/all \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Response:**
 
 ```json

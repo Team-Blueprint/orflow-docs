@@ -1,0 +1,36 @@
+---
+title: "Confirm Card Update"
+sidebarTitle: "Confirm Card Update"
+api: "POST /v1/portal/subscriptions/confirm-update-card"
+---
+
+After Nomba redirects the customer back from the card-update checkout, call this endpoint with the `order_reference`. The system extracts the tokenized card data from Nomba, creates a new payment method, and sets it as the default.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/subscriptions/confirm-update-card \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <portal_session_token>" \
+  -d '{
+    "order_reference": "card-update-550e8400-e29b-41d4-a716-446655440000"
+  }'
+```
+</CodeGroup>
+
+### Body
+
+| Name | Type | Description |
+|------|------|-------------|
+| `order_reference` | `string` | The order reference returned by `create-update-card-checkout` |
+
+## Response
+
+```json
+{
+  "success": true
+}
+```
+
+Returns `success: false` if the tokenized card data is missing or invalid (e.g., the checkout was not completed).

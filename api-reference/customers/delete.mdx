@@ -5,6 +5,14 @@ openapi: "DELETE /v1/customers/{customer_id}/del"
 
 Permanently delete a customer. Also removes payment methods and cancels active subscriptions.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X DELETE {{API_BASE_URL}}/v1/customers/<customer_id>/del \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

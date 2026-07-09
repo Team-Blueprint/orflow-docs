@@ -5,6 +5,18 @@ openapi: "PATCH /v1/reconciliation/discrepancies/{discrepancy_id}/resolve"
 
 Mark a discrepancy as resolved. Requires an `sk_` API key.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X PATCH {{API_BASE_URL}}/v1/reconciliation/discrepancies/<discrepancy_id>/resolve \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

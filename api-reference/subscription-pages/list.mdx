@@ -5,6 +5,14 @@ openapi: "GET /v1/subscription-pages/list"
 
 Returns all subscription pages for the current tenant and project, including plan name and project name.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/subscription-pages/list \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Query Parameters:**
 
 | Field | Type | Required | Description |

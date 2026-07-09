@@ -5,6 +5,18 @@ openapi: "POST /v1/subscription-pages/create"
 
 Create a new shareable subscription page linked to a plan. A unique short code is auto-generated for the page URL.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/subscription-pages/create \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Request Body:**
 
 | Field | Type | Required | Description |

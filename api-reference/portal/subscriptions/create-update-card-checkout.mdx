@@ -1,0 +1,36 @@
+---
+title: "Create Card Update Checkout"
+sidebarTitle: "Create Card Update Checkout"
+api: "POST /v1/portal/subscriptions/create-update-card-checkout"
+---
+
+Initiates a $0 Nomba hosted checkout with `tokenizeCard=true`. The customer is redirected to the returned `checkout_link` to tokenize their new card. After Nomba redirects back, call `confirm-update-card` with the `order_reference`.
+
+## Request
+
+<CodeGroup>
+```bash {{ title: "cURL" }}
+curl -X POST {{API_BASE_URL}}/v1/portal/subscriptions/create-update-card-checkout \
+  -H "Authorization: Bearer <portal_session_token>"
+```
+</CodeGroup>
+
+### Headers
+
+| Name | Value |
+|------|-------|
+| `Authorization` | `Bearer <portal_session_token>` |
+
+## Response
+
+```json
+{
+  "checkout_link": "https://checkout.nomba.com/pay/ref_abc123",
+  "order_reference": "card-update-550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `checkout_link` | Redirect the customer to this Nomba hosted checkout URL |
+| `order_reference` | Pass this to `confirm-update-card` after the callback |

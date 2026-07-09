@@ -5,6 +5,18 @@ openapi: "POST /v1/subscriptions/{subscription_id}/change-plan"
 
 Switch an active subscription to a new plan with pro-rated billing. The net amount is charged immediately.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/subscriptions/<subscription_id>/change-plan \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

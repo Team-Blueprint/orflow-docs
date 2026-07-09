@@ -5,6 +5,18 @@ openapi: "POST /v1/plans/create"
 
 Create a new billing plan. Amounts are in **major currency units** (e.g. `10.00` for ₦10).
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/plans/create \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Request Body:**
 
 | Field | Type | Required | Description |

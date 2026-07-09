@@ -5,6 +5,14 @@ openapi: "DELETE /v1/webhooks/endpoints/{endpoint_id}"
 
 Permanently delete a webhook endpoint. No further events will be sent to it.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X DELETE {{API_BASE_URL}}/v1/webhooks/endpoints/<endpoint_id> \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

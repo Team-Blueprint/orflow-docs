@@ -5,6 +5,14 @@ openapi: "GET /v1/auth/keys/new"
 
 Return all four API key slots. Slots that have never been created appear as `null`.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/auth/keys/new \
+  -H "Authorization: Bearer <dashboard_jwt_token>" \
+  -H "X-CSRF-Token: <csrf_token>"
+```
+</CodeGroup>
+
 **Auth:** Requires JWT (dashboard users only).
 
 **Response:**

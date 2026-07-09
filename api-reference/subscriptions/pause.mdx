@@ -5,6 +5,14 @@ openapi: "POST /v1/subscriptions/{subscription_id}/pause"
 
 Pause an active subscription. No billing occurs while paused. Can be resumed later.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/subscriptions/<subscription_id>/pause \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

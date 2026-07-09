@@ -1,0 +1,45 @@
+---
+title: "Portal API"
+sidebarTitle: "Overview"
+---
+
+Endpoints for the self-service customer billing portal. Customers authenticate using a portal token slug and PIN, then manage their subscription and payment method.
+
+## Authentication
+
+Portal endpoints use two auth models:
+
+| Type | Auth | Endpoints |
+|------|------|-----------|
+| **Public** | No auth | `access`, `verify-access`, `verify-checkout` |
+| **Session** | Bearer token (`Authorization: Bearer <portal_session_token>`) | All subscription endpoints |
+
+The portal session token is a short-lived JWT obtained from `POST /v1/portal/verify-access`.
+
+## Endpoints
+
+### Access & Auth
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/portal/access/{token_slug}` | Look up customer name by slug |
+| `POST` | `/v1/portal/verify-access` | Authenticate with slug + PIN, get session token |
+| `POST` | `/v1/portal/update-pin` | Change portal PIN |
+
+### Subscriptions
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/portal/subscriptions/me` | Get subscription details |
+| `GET` | `/v1/portal/subscriptions/me/payments` | Get payment history |
+| `POST` | `/v1/portal/subscriptions/create-update-card-checkout` | Create a $0 checkout to capture a new card |
+| `POST` | `/v1/portal/subscriptions/confirm-update-card` | Confirm card update after checkout callback |
+| `POST` | `/v1/portal/subscriptions/cancel` | Cancel subscription |
+| `POST` | `/v1/portal/subscriptions/pause` | Pause subscription |
+| `POST` | `/v1/portal/subscriptions/resume` | Resume subscription |
+
+### Checkout Verification
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/v1/portal/verify-checkout` | Verify payment after callback redirect |

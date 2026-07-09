@@ -5,6 +5,18 @@ openapi: "PATCH /v1/subscription-pages/{page_id}/update"
 
 Partially updates a subscription page. You can change the linked plan or deactivate the page.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X PATCH {{API_BASE_URL}}/v1/subscription-pages/<page_id>/update \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

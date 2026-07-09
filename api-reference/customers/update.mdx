@@ -5,6 +5,18 @@ openapi: "PATCH /v1/customers/{customer_id}/update"
 
 Partially update a customer.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X PATCH {{API_BASE_URL}}/v1/customers/<customer_id>/update \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

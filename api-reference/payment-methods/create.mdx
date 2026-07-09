@@ -5,6 +5,18 @@ openapi: "POST /v1/payment-methods/create"
 
 Register a tokenized payment method for a customer. The `provider_token` comes from your payment provider's SDK.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/payment-methods/create \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    ...
+  }'
+```
+</CodeGroup>
+
 **Request Body:**
 
 | Field | Type | Required | Description |

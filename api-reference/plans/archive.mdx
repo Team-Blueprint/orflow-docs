@@ -5,6 +5,14 @@ openapi: "POST /v1/plans/{plan_id}/archive"
 
 Archive a plan so it can no longer be subscribed to. Active subscriptions continue unaffected.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl -X POST {{API_BASE_URL}}/v1/plans/<plan_id>/archive \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Path Parameters:**
 
 | Field | Type | Description |

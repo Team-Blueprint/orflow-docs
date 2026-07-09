@@ -5,6 +5,14 @@ openapi: "GET /v1/webhooks/events/all"
 
 List recent outbound webhook events triggered by the tenant's activity.
 
+<CodeGroup>
+```bash { title: "cURL" }
+curl {{API_BASE_URL}}/v1/webhooks/events/all \
+  -H "X-API-Key: sk_test_..." \
+  -H "X-Project-ID: <project_id>"
+```
+</CodeGroup>
+
 **Query Parameters:**
 
 | Field | Type | Description |
