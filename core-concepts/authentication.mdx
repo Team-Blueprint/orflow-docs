@@ -40,11 +40,15 @@ Never expose secret keys (`sk_...`) in client-side code, mobile apps, or public 
 
 ## Key Management
 
-API keys are managed from the **Orflow Dashboard** — there is no API key endpoint accessible via API key.
+API keys are managed from the **Dashboard → Project Settings**. Keys are scoped to individual projects — each project has its own set of four key slots (`pk_test`, `sk_test`, `pk_live`, `sk_live`).
 
 1. **Regenerate** — Creates a new key; the old one stops working immediately.
 2. **Revoke** — Disables a key slot without replacement.
 
 <Note>
 Rotating a key immediately invalidates the old one. Update your environment variables and redeploy before revoking.
+</Note>
+
+<Note>
+You must be a member of a project to manage its keys. Key management is only available through the dashboard UI — there is no public API endpoint.
 </Note>

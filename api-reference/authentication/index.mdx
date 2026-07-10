@@ -3,14 +3,8 @@ title: "Authentication API"
 sidebarTitle: "Overview"
 ---
 
-Endpoints for managing API keys for programmatic access to the Orflow API.
-
-**Available endpoints:**
-- `GET /v1/auth/keys/new` — View all four API key slots and their active status
-- `POST /v1/auth/keys/create` — Generate a new key for an unused slot
-- `POST /v1/auth/keys/regenerate` — Replace an existing key (old key stops working immediately)
-- `POST /v1/auth/keys/revoke` — Soft-revoke a key slot
+API keys for programmatic access to the Orflow API are managed per-project from the **Dashboard → Project Settings**.
 
 <Note>
-These endpoints require JWT authentication (dashboard session). They are not accessible via API key.
+API key management is handled entirely through the dashboard UI. Keys are scoped to individual projects — you must be a member of a project to view or manage its keys. There is no public API endpoint for managing keys.
 </Note>
